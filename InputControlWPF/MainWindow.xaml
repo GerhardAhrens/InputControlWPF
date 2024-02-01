@@ -1,0 +1,47 @@
+﻿<Window
+    x:Class="InputControlWPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:inputControl="clr-namespace:InputControlWPF.InputControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+
+    <StackPanel Orientation="Vertical">
+        <inputControl:ContentFrame
+            HorizontalAlignment="Left"
+            BorderColor="Black"
+            BorderWidth="1"
+            ContentColor="AliceBlue"
+            Description="TextBox Integer"
+            FrameWidth="250">
+            <inputControl:ContentFrame.ContentElement>
+                <inputControl:TextBoxInt
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    IsNegative="True"
+                    IsReadOnly="False" />
+            </inputControl:ContentFrame.ContentElement>
+        </inputControl:ContentFrame>
+
+        <inputControl:TextBoxDecimal
+            Width="100"
+            HorizontalAlignment="Left"
+            DecimalPlaces="2"
+            IsNegative="True"
+            IsReadOnly="False"
+            Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}" />
+
+
+        <Button
+            Width="100"
+            Height="30"
+            HorizontalAlignment="Left"
+            Click="Button_Click"
+            Content="Klick" />
+    </StackPanel>
+
+</Window>
