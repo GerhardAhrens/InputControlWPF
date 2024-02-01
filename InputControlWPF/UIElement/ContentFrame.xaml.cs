@@ -11,7 +11,7 @@
     public partial class ContentFrame : UserControl
     {
         public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register("Description", typeof(string), typeof(ContentFrame), new PropertyMetadata("<TODO>"));
+            DependencyProperty.Register("Description", typeof(string), typeof(ContentFrame), new PropertyMetadata("<ToDo>"));
 
         public string Description
         {
@@ -20,11 +20,11 @@
         }
 
         public static readonly DependencyProperty ContentElementProperty =
-            DependencyProperty.Register("ContentElement", typeof(Control), typeof(ContentFrame), new PropertyMetadata(null));
+            DependencyProperty.Register("ContentElement", typeof(object), typeof(ContentFrame), new PropertyMetadata(null));
 
-        public Control ContentElement
+        public object ContentElement
         {
-            get { return (Control)GetValue(ContentElementProperty); }
+            get { return (object)GetValue(ContentElementProperty); }
             set { SetValue(ContentElementProperty, value); }
         }
 

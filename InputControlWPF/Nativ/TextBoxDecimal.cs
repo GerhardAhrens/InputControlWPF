@@ -54,7 +54,6 @@
             set { SetValue(NumberProperty, value); }
         }
 
-
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -74,10 +73,9 @@
             }
             else
             {
-                this.Number = Convert.ToDecimal(this.Text);
+                this.Number = Convert.ToDecimal(string.IsNullOrEmpty(this.Text) == true ? "0" : this.Text);
             }
         }
-
 
         protected override void OnGotFocus(RoutedEventArgs e)
         {
@@ -96,7 +94,7 @@
             else
             {
                 e.Handled = false;
-                this.Number = Convert.ToDecimal(this.Text);
+                this.Number = Convert.ToDecimal(string.IsNullOrEmpty(this.Text) == true ? "0" : this.Text);
                 int c = GetDecimalPlaces(this.Number);
                 if (this.DecimalPlaces != c)
                 {

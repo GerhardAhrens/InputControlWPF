@@ -11,21 +11,13 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="Vertical">
-        <inputControl:ContentFrame
+
+        <inputControl:TextBoxInt
+            Width="100"
             HorizontalAlignment="Left"
-            BorderColor="Black"
-            BorderWidth="1"
-            ContentColor="AliceBlue"
-            Description="TextBox Integer"
-            FrameWidth="250">
-            <inputControl:ContentFrame.ContentElement>
-                <inputControl:TextBoxInt
-                    Width="100"
-                    HorizontalAlignment="Left"
-                    IsNegative="True"
-                    IsReadOnly="False" />
-            </inputControl:ContentFrame.ContentElement>
-        </inputControl:ContentFrame>
+            IsNegative="True"
+            IsReadOnly="False"
+            Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"/>
 
         <inputControl:TextBoxDecimal
             Width="100"
