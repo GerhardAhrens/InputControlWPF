@@ -12,17 +12,21 @@
 
     <StackPanel Orientation="Vertical">
 
-        <inputControl:ContentElements BorderBrush="Black" BorderThickness="1">
+        <inputControl:ContentElements
+            BorderBrush="Black"
+            BorderThickness="1"
+            KeyboardNavigation.DirectionalNavigation="Contained">
             <inputControl:ContentFrame
                 Title="TextBox Integer"
                 HorizontalAlignment="Left"
-                ContentFrameColor="WhiteSmoke">
+                ContentFrameColor="LightBlue">
                 <inputControl:TextBoxInt
                     Width="100"
                     HorizontalAlignment="Left"
                     IsNegative="True"
                     IsReadOnly="False"
-                    Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}" />
+                    Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"
+                    TabIndex="10" />
             </inputControl:ContentFrame>
 
             <inputControl:ContentFrame
@@ -35,14 +39,18 @@
                     DecimalPlaces="2"
                     IsNegative="True"
                     IsReadOnly="False"
-                    Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}" />
+                    Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}"
+                    TabIndex="11" />
             </inputControl:ContentFrame>
 
             <inputControl:ContentFrame
                 Title="TextBox ReadOnly"
                 HorizontalAlignment="Left"
-                ContentFrameColor="WhiteSmoke">
-                <inputControl:TextBoxReadOnly Width="100" Text="Test" />
+                ContentFrameColor="LightSalmon">
+                <inputControl:TextBoxReadOnly
+                    Width="100"
+                    TabIndex="12"
+                    Text="Test" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>
 
@@ -53,7 +61,8 @@
             Height="30"
             HorizontalAlignment="Left"
             Click="Button_Click"
-            Content="Klick" />
+            Content="Klick"
+            TabIndex="20" />
     </StackPanel>
 
 </Window>

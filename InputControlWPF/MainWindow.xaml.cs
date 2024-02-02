@@ -20,7 +20,7 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            decimal valueInt = this.ValueInt.Value;
+            int valueInt = this.ValueInt.Value;
             decimal valueDec = this.ValueDecimal.Value;
 
             MessageBox.Show(valueInt.ToString());

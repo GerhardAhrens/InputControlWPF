@@ -19,6 +19,7 @@ namespace InputControlWPF.InputControls
     using System.IO;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
@@ -86,6 +87,59 @@ namespace InputControlWPF.InputControls
             {
                 this.BorderBrush = Brushes.Transparent;
                 this.BorderThickness = new Thickness(0);
+            }
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            {
+                if (e.Key == Key.Tab)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        this.MoveFocus(FocusNavigationDirection.Previous);
+                        break;
+                    case Key.Down:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Left:
+                        return;
+                    case Key.Right:
+                        return;
+                    case Key.Pa1:
+                        return;
+                    case Key.End:
+                        return;
+                    case Key.Delete:
+                        return;
+                    case Key.Return:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Tab:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                }
+            }
+
+        }
+
+        private void MoveFocus(FocusNavigationDirection direction)
+        {
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
+
+            if (focusedElement != null)
+            {
+                if (focusedElement is TextBox)
+                {
+                    focusedElement.MoveFocus(new TraversalRequest(direction));
+                }
             }
         }
 

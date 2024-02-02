@@ -31,20 +31,22 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Controls:ContentFrame}">
-                    <Grid Background="{TemplateBinding ContentFrameColor}">
+                    <Grid Background="{TemplateBinding ContentFrameColor}" ShowGridLines="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="title" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <ContentPresenter
-                            Grid.Column="0"
-                            Margin="{TemplateBinding TitleMargin}"
-                            HorizontalAlignment="{TemplateBinding HorizontalTitleAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalTitleAlignment}"
-                            ContentSource="Title"
-                            TextBlock.FontWeight="{TemplateBinding TitleFontWeight}"
-                            TextBlock.TextAlignment="Left" />
+                        <Border BorderBrush="Green" BorderThickness="0,1,0,0">
+                            <ContentPresenter
+                                Grid.Column="0"
+                                Margin="{TemplateBinding TitleMargin}"
+                                HorizontalAlignment="{TemplateBinding HorizontalTitleAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalTitleAlignment}"
+                                ContentSource="Title"
+                                TextBlock.FontWeight="{TemplateBinding TitleFontWeight}"
+                                TextBlock.TextAlignment="Left" />
+                        </Border>
 
                         <ContentPresenter
                             Grid.Column="1"
