@@ -12,20 +12,38 @@
 
     <StackPanel Orientation="Vertical">
 
-        <inputControl:TextBoxInt
-            Width="100"
-            HorizontalAlignment="Left"
-            IsNegative="True"
-            IsReadOnly="False"
-            Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"/>
+        <inputControl:ContentElements BorderBrush="Black" BorderThickness="1">
+            <inputControl:ContentFrame
+                Title="TextBox Integer"
+                HorizontalAlignment="Left"
+                ContentFrameColor="WhiteSmoke">
+                <inputControl:TextBoxInt
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    IsNegative="True"
+                    IsReadOnly="False"
+                    Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}" />
+            </inputControl:ContentFrame>
 
-        <inputControl:TextBoxDecimal
-            Width="100"
-            HorizontalAlignment="Left"
-            DecimalPlaces="2"
-            IsNegative="True"
-            IsReadOnly="False"
-            Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}" />
+            <inputControl:ContentFrame
+                Title="TextBox Decimal"
+                HorizontalAlignment="Left"
+                ContentFrameColor="WhiteSmoke">
+                <inputControl:TextBoxDecimal
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    DecimalPlaces="2"
+                    IsNegative="True"
+                    IsReadOnly="False"
+                    Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}" />
+            </inputControl:ContentFrame>
+
+            <inputControl:ContentFrame
+                HorizontalAlignment="Left"
+                TitleFontWeight="Bold"
+                ContentFrameColor="WhiteSmoke" />
+        </inputControl:ContentElements>
+
 
 
         <Button
