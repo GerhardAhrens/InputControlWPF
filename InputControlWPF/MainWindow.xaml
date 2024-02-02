@@ -17,6 +17,17 @@
             BorderThickness="1"
             KeyboardNavigation.DirectionalNavigation="Contained">
             <inputControl:ContentFrame
+                Title="TextBox alle Zeichen"
+                HorizontalAlignment="Left"
+                ContentFrameColor="LightBlue">
+                <inputControl:TextBoxAll
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    SetBorder="True"
+                    TabIndex="10" />
+            </inputControl:ContentFrame>
+
+            <inputControl:ContentFrame
                 Title="TextBox Integer"
                 HorizontalAlignment="Left"
                 ContentFrameColor="LightBlue">
@@ -26,7 +37,7 @@
                     IsNegative="True"
                     IsReadOnly="False"
                     Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"
-                    TabIndex="10" />
+                    TabIndex="11" />
             </inputControl:ContentFrame>
 
             <inputControl:ContentFrame
@@ -40,7 +51,7 @@
                     IsNegative="True"
                     IsReadOnly="False"
                     Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}"
-                    TabIndex="11" />
+                    TabIndex="12" />
             </inputControl:ContentFrame>
 
             <inputControl:ContentFrame
@@ -49,7 +60,7 @@
                 ContentFrameColor="LightSalmon">
                 <inputControl:TextBoxReadOnly
                     Width="100"
-                    TabIndex="12"
+                    TabIndex="13"
                     Text="Test" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>

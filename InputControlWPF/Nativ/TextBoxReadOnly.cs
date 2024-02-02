@@ -32,35 +32,36 @@ namespace InputControlWPF.InputControls
         private const string ICON_DELETE = "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z";
         private const string ICON_CLOCK = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z";
 
+        public static readonly DependencyProperty ReadOnlyColorProperty =
+            DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
+
+        public static readonly DependencyProperty SetBorderProperty =
+            DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxReadOnly), new PropertyMetadata(true));
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxReadOnly"/> class.
         /// </summary>
         public TextBoxReadOnly()
         {
+            this.FontSize = 12.0;
+            this.FontFamily = new FontFamily("Arial");
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Margin = new Thickness(2);
             this.MinHeight = 18;
-            this.Height = 25;
+            this.Height = 23;
             this.FontSize = 14;
-            this.FontFamily = new FontFamily("Arial");
-            this.IsReadOnly = false;
+            this.IsReadOnly = true;
             this.Focusable = true;
             /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();
         }
-
-        public static readonly DependencyProperty ReadOnlyColorProperty =
-            DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
 
         public Brush ReadOnlyColor
         {
             get { return (Brush)GetValue(ReadOnlyColorProperty); }
             set { SetValue(ReadOnlyColorProperty, value); }
         }
-
-        public static readonly DependencyProperty SetBorderProperty =
-            DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxReadOnly), new PropertyMetadata(true));
 
         public bool SetBorder
         {

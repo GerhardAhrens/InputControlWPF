@@ -27,7 +27,7 @@
             DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(ContentFrame), new UIPropertyMetadata(new Thickness(0, 2, 0, 2)));
 
         public static readonly DependencyProperty TitleFontWeightProperty =
-            DependencyProperty.Register("TitleFontWeight", typeof(FontWeight), typeof(ContentFrame), new UIPropertyMetadata(FontWeights.Medium));
+            DependencyProperty.Register("TitleFontWeight", typeof(FontWeight), typeof(ContentFrame), new UIPropertyMetadata(FontWeights.Medium, OnTitleFontWeightsChanged));
 
         public static readonly DependencyProperty RequiredFieldProperty =
             DependencyProperty.Register("RequiredField", typeof(bool), typeof(ContentFrame), new UIPropertyMetadata(false, OnRequiredFieldChanged));

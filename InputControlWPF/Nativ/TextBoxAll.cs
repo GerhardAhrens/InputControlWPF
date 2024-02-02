@@ -1,65 +1,63 @@
-ï»¿namespace InputControlWPF.InputControls
+//-----------------------------------------------------------------------
+// <copyright file="TextBoxAll.cs" company="Lifeprojects.de">
+//     Class: TextBoxAll
+//     Copyright © Lifeprojects.de 2024
+// </copyright>
+//
+// <author>Gerhard Ahrens - Lifeprojects.de</author>
+// <email>gerhard.ahrens@lifeprojects.de</email>
+// <date>02.02.2024</date>
+//
+// <summary>
+// Klasse für 
+// </summary>
+//-----------------------------------------------------------------------
+
+
+namespace InputControlWPF.InputControls
 {
-    using System.Globalization;
+    using System;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     using Shapes = System.Windows.Shapes;
 
-    public class TextBoxDecimal : TextBox
+    public class TextBoxAll : TextBox
     {
+        /* Definition der Path Geometry Icon für Kontextmenü */
         private const string ICON_COPY = "M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z";
         private const string ICON_PASTE = "M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z";
         private const string ICON_DELETE = "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z";
         private const string ICON_CLOCK = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z";
 
-        public static readonly DependencyProperty IsNegativeProperty = DependencyProperty.Register("IsNegative", typeof(bool), typeof(TextBoxDecimal), new PropertyMetadata(false));
-        public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(int), typeof(TextBoxDecimal), new FrameworkPropertyMetadata(2));
-        public static readonly DependencyProperty NumberProperty = DependencyProperty.Register("Number", typeof(decimal), typeof(TextBoxDecimal), new FrameworkPropertyMetadata(0M, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxDecimal), new PropertyMetadata(true, OnSetBorderChanged));
+        public static readonly DependencyProperty ReadOnlyColorProperty =
+            DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxAll), new PropertyMetadata(Brushes.Transparent));
 
-        private char decimalSeparator = ',';
+        public static readonly DependencyProperty SetBorderProperty =
+            DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxAll), new PropertyMetadata(true, OnSetBorderChanged));
 
-        public TextBoxDecimal()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxAll"/> class.
+        /// </summary>
+        public TextBoxAll()
         {
-            string separator = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
-            this.decimalSeparator = Convert.ToChar(separator);
-
             this.FontSize = 12.0;
             this.FontFamily = new FontFamily("Arial");
-            this.BorderBrush = Brushes.Green;
-            this.HorizontalContentAlignment = HorizontalAlignment.Right;
-            this.VerticalAlignment = VerticalAlignment.Center;
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Center;
-            this.Padding = new Thickness(0);
             this.Margin = new Thickness(2);
             this.MinHeight = 18;
             this.Height = 23;
-            this.ClipToBounds = false;
+            this.FontSize = 14;
+            this.IsReadOnly = false;
             this.Focusable = true;
 
-            /* Trigger an Style Ã¼bergeben */
+            /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();
-        }
-
-        public bool IsNegative
-        {
-            get { return (bool)GetValue(IsNegativeProperty); }
-            set { SetValue(IsNegativeProperty, value); }
-        }
-
-        public int DecimalPlaces
-        {
-            get {return (int)GetValue(DecimalPlacesProperty);}
-            set {SetValue(DecimalPlacesProperty, value); }
-        }
-
-        public decimal Number
-        {
-            get { return (decimal)GetValue(NumberProperty); }
-            set { SetValue(NumberProperty, value); }
         }
 
         public bool SetBorder
@@ -68,17 +66,22 @@
             set { SetValue(SetBorderProperty, value); }
         }
 
+        public Brush ReadOnlyColor
+        {
+            get { return (Brush)GetValue(ReadOnlyColorProperty); }
+            set { SetValue(ReadOnlyColorProperty, value); }
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
             this.CaretIndex = this.Text.Length;
             this.SelectAll();
 
-            /* Spezifisches KontextmenÃ¼ fÃ¼r Control Ã¼bergeben */
+            /* Spezifisches Kontextmenü für Control übergeben */
             this.ContextMenu = this.BuildContextMenu();
 
-            /* Rahmen fÃ¼r Control festlegen */
+            /* Rahmen für Control festlegen */
             if (SetBorder == true)
             {
                 this.BorderBrush = Brushes.Green;
@@ -91,118 +94,8 @@
             }
         }
 
-        protected override void OnTextChanged(TextChangedEventArgs e)
-        {
-            base.OnTextChanged(e);
-
-            if (string.IsNullOrEmpty( this.Text)  == true )
-            {
-                this.Text = string.Empty;
-                this.Number = 0;
-            }
-            else
-            {
-                if (decimal.TryParse(this.Text, out decimal result))
-                {
-                    this.Number = Convert.ToDecimal(string.IsNullOrEmpty(this.Text) == true ? "0" : this.Text);
-                }
-                else
-                {
-                    this.Text = string.Empty;
-                    this.Number = 0;
-                }
-            }
-        }
-
-        protected override void OnGotFocus(RoutedEventArgs e)
-        {
-            base.OnGotFocus(e);
-            this.SelectAll();
-        }
-
-        protected override void OnLostFocus(RoutedEventArgs e)
-        {
-            base.OnLostFocus(e);
-
-            if (this.DecimalPlaces == 0)
-            {
-                this.Number = Convert.ToDecimal(this.Text);
-            }
-            else
-            {
-                e.Handled = false;
-                this.Number = Convert.ToDecimal(string.IsNullOrEmpty(this.Text) == true ? "0" : this.Text);
-                int c = GetDecimalPlaces(this.Number);
-                if (this.DecimalPlaces != c)
-                {
-                    this.Text = $"{this.Text}{this.decimalSeparator}{new string('0', this.DecimalPlaces - c)}";
-                    this.Number = Convert.ToDecimal(this.Text);
-                }
-            }
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-        }
-
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-
-            if (e.ClickCount == 2)
-            {
-                this.SelectAll();
-            }
-
-        }
-
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            base.OnPreviewKeyDown(e);
-
-            if (this.IsNegative == true)
-            {
-                if (e.Key == Key.OemMinus || e.Key == Key.Subtract)
-                {
-                    if (this.Text.Count(c => c == '-') >= 1)
-                    {
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        int cursorPos = ((TextBox)e.Source).CaretIndex;
-                        if (cursorPos == 0)
-                        {
-                            e.Handled = false;
-                        }
-                        else
-                        {
-                            e.Handled = true;
-                        }
-                    }
-
-                    return;
-                }
-            }
-
-            if (e.Key == Key.OemComma)
-            {
-                if (this.Text.Count(c => c == decimalSeparator) >= 1)
-                {
-                    e.Handled = true;
-                }
-                else
-                {
-                    e.Handled = false;
-                }
-
-                return;
-            }
-
-            int key = (int)e.Key;
-            e.Handled = !(key >= 34 && key <= 43 || key == 2 || key == 32 || key == 21 || key == 22 || key == 23 || key == 25 || key == 9);
-
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 if (e.Key == Key.Tab)
@@ -215,62 +108,30 @@
                 switch (e.Key)
                 {
                     case Key.Up:
-                        {
-                            this.MoveFocus(FocusNavigationDirection.Previous);
-                            return;
-                        }
+                        this.MoveFocus(FocusNavigationDirection.Previous);
+                        break;
                     case Key.Down:
-                        {
-                            this.MoveFocus(FocusNavigationDirection.Next);
-                            return;
-                        }
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
                     case Key.Left:
-                        {
-                            return;
-                        }
+                        return;
                     case Key.Right:
-                        {
-                            return;
-                        }
+                        return;
                     case Key.Pa1:
-                        {
-                            return;
-                        }
+                        return;
                     case Key.End:
-                        {
-                            return;
-                        }
-                    case Key.Back:
-                        {
-                            return;
-                        }
+                        return;
                     case Key.Delete:
-                        {
-                            return;
-                        }
+                        return;
                     case Key.Return:
-                        {
-                            this.MoveFocus(FocusNavigationDirection.Next);
-                            return;
-                        }
-
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
                     case Key.Tab:
-                        {
-                            this.MoveFocus(FocusNavigationDirection.Next);
-                            return;
-                        }
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
                 }
             }
 
-            if (this.Text.IndexOf(decimalSeparator) > 0)
-            {
-                int decPlaces = this.Text.Substring(this.Text.IndexOf(decimalSeparator)).Length;
-                if (decPlaces > this.DecimalPlaces)
-                {
-                    e.Handled = true;
-                    return;
-                }
-            }
         }
 
         private void MoveFocus(FocusNavigationDirection direction)
@@ -290,7 +151,7 @@
         {
             if (e.NewValue != null)
             {
-                var control = (TextBoxDecimal)d;
+                var control = (TextBoxAll)d;
 
                 if (e.NewValue.GetType() == typeof(bool))
                 {
@@ -312,21 +173,21 @@
         {
             Style inputControlStyle = new Style();
 
-            /* Trigger fÃ¼r IsMouseOver = True */
+            /* Trigger für IsMouseOver = True */
             Trigger triggerIsMouseOver = new Trigger();
             triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
             triggerIsMouseOver.Value = true;
             triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsMouseOver);
 
-            /* Trigger fÃ¼r IsFocused = True */
+            /* Trigger für IsFocused = True */
             Trigger triggerIsFocused = new Trigger();
             triggerIsFocused.Property = TextBox.IsFocusedProperty;
             triggerIsFocused.Value = true;
             triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsFocused);
 
-            /* Trigger fÃ¼r IsFocused = True */
+            /* Trigger für IsFocused = True */
             Trigger triggerIsReadOnly = new Trigger();
             triggerIsReadOnly.Property = TextBox.IsReadOnlyProperty;
             triggerIsReadOnly.Value = true;
@@ -336,13 +197,8 @@
             return inputControlStyle;
         }
 
-        private int GetDecimalPlaces(decimal @this)
-        {
-            return BitConverter.GetBytes(decimal.GetBits(@this)[3])[2];
-        }
-
         /// <summary>
-        /// Spezifisches KontextmenÃ¼ erstellen
+        /// Spezifisches Kontextmenü erstellen
         /// </summary>
         /// <returns></returns>
         private ContextMenu BuildContextMenu()
@@ -355,13 +211,13 @@
             textBoxContextMenu.Items.Add(copyMenu);
 
             MenuItem pasteMenu = new MenuItem();
-            pasteMenu.Header = "EinfÃ¼gen Inhalt";
+            pasteMenu.Header = "Einfügen Inhalt";
             pasteMenu.Icon = this.GetPathGeometry(ICON_PASTE);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
             textBoxContextMenu.Items.Add(pasteMenu);
 
             MenuItem deleteMenu = new MenuItem();
-            deleteMenu.Header = "LÃ¶sche Inhalt";
+            deleteMenu.Header = "Lösche Inhalt";
             deleteMenu.Icon = this.GetPathGeometry(ICON_DELETE);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
             textBoxContextMenu.Items.Add(deleteMenu);
@@ -396,7 +252,7 @@
         }
 
         /// <summary>
-        /// Icon aus String fÃ¼r PathGeometry erstellen
+        /// Icon aus String für PathGeometry erstellen
         /// </summary>
         /// <param name="iconString">Icon String</param>
         /// <param name="iconColor">Icon Farbe</param>
@@ -415,7 +271,7 @@
         }
 
         /// <summary>
-        /// Icon aus String fÃ¼r PathGeometry erstellen
+        /// Icon aus String für PathGeometry erstellen
         /// </summary>
         /// <param name="iconString">Icon String</param>
         /// <returns></returns>
@@ -425,13 +281,13 @@
         }
 
         /// <summary>
-        /// Icon aus String fÃ¼r PathGeometry erstellen
+        /// Icon aus String für PathGeometry erstellen
         /// </summary>
         /// <param name="iconString">Icon String</param>
         /// <returns></returns>
         private Shapes.Path GetPathGeometry(string iconString)
         {
-            return GetPathGeometry(iconString, Colors.Blue);
+            return GetPathGeometry(iconString,Colors.Blue);
         }
     }
 }
