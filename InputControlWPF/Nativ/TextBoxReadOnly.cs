@@ -52,17 +52,6 @@ namespace InputControlWPF.InputControls
         public static readonly DependencyProperty ReadOnlyColorProperty =
             DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
 
-        /*
-        private static void ReadOnlyColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is UIElement uIElement)
-            {
-                var uiElement = (TextBox)uIElement;
-                //uiElement.Background = ;
-            }
-        }
-        */
-
         public Brush ReadOnlyColor
         {
             get { return (Brush)GetValue(ReadOnlyColorProperty); }
@@ -186,12 +175,12 @@ namespace InputControlWPF.InputControls
         /// <param name="iconString">Icon String</param>
         /// <param name="iconColor">Icon Farbe</param>
         /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString, Color iconColor)
+        private Shapes.Path GetPathGeometry(string iconString, Color iconColor, int size = 24)
         {
             var path = new Shapes.Path
             {
-                Height = 24,
-                Width = 24,
+                Height = size,
+                Width = size,
                 Fill = new SolidColorBrush(iconColor),
                 Data = Geometry.Parse(iconString)
             };
@@ -204,55 +193,19 @@ namespace InputControlWPF.InputControls
         /// </summary>
         /// <param name="iconString">Icon String</param>
         /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString)
+        private Shapes.Path GetPathGeometry(string iconString, int size = 24)
         {
-            return GetPathGeometry(iconString,Colors.Blue);
+            return GetPathGeometry(iconString, Colors.Blue, size);
         }
 
         /// <summary>
-        /// Convert Geometry to ImageSource, Draws the Geometry on a bitmap surface and centers it.
+        /// Icon aus String für PathGeometry erstellen
         /// </summary>
-        /// <param name="geometry"></param>
-        /// <param name="TargetSize"></param>
+        /// <param name="iconString">Icon String</param>
         /// <returns></returns>
-        private ImageSource GeometryToImageSource(Geometry geometry, int TargetSize)
+        private Shapes.Path GetPathGeometry(string iconString)
         {
-            var rect = geometry.GetRenderBounds(new Pen(Brushes.Black, 0));
-
-            var bigger = rect.Width > rect.Height ? rect.Width : rect.Height;
-            var scale = TargetSize / bigger;
-
-            Geometry scaledGeometry = Geometry.Combine(geometry, geometry, GeometryCombineMode.Intersect, new ScaleTransform(scale, scale));
-            rect = scaledGeometry.GetRenderBounds(new Pen(Brushes.Black, 0));
-
-            Geometry transformedGeometry = Geometry.Combine(scaledGeometry, scaledGeometry, GeometryCombineMode.Intersect, new TranslateTransform(((TargetSize - rect.Width) / 2) - rect.Left, ((TargetSize - rect.Height) / 2) - rect.Top));
-
-            RenderTargetBitmap bmp = new RenderTargetBitmap(TargetSize, TargetSize, 96, 96, PixelFormats.Pbgra32);
-
-            DrawingVisual viz = new DrawingVisual();
-            using (DrawingContext dc = viz.RenderOpen())
-            {
-                dc.DrawGeometry(Brushes.Black, null, transformedGeometry);
-            }
-
-            bmp.Render(viz);
-
-            var mem = new MemoryStream();
-            PngBitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(bmp));
-            pngEncoder.Save(mem);
-            var itm = GetImg(mem);
-            return itm;
-        }
-
-        private BitmapImage GetImg(MemoryStream ms)
-        {
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.StreamSource = ms;
-            bmp.EndInit();
-
-            return bmp;
+            return GetPathGeometry(iconString,Colors.Blue);
         }
     }
 }

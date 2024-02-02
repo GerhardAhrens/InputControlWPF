@@ -39,9 +39,11 @@
             </inputControl:ContentFrame>
 
             <inputControl:ContentFrame
+                Title="TextBox ReadOnly"
                 HorizontalAlignment="Left"
-                TitleFontWeight="Bold"
-                ContentFrameColor="WhiteSmoke" />
+                ContentFrameColor="WhiteSmoke">
+                <inputControl:TextBoxReadOnly Width="100" Text="Test" />
+            </inputControl:ContentFrame>
         </inputControl:ContentElements>
 
 
