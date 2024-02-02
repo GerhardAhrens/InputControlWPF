@@ -68,8 +68,7 @@ namespace InputControlWPF.InputControls
             /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();
 
-            this.PreviewTextInput += this.OnPreviewTextInput;
-
+            WeakEventManager<TextBoxMath, TextCompositionEventArgs>.AddHandler(this,"PreviewTextInput", this.OnPreviewTextInput);
         }
 
         public bool SetBorder
@@ -368,7 +367,7 @@ namespace InputControlWPF.InputControls
                 miResult.FontSize = 18;
                 miResult.FontWeight = FontWeights.Medium;
                 miResult.IsEnabled = false;
-                miResult.Click += OnResultClick;
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(miResult, "Click", this.OnResultClick);
 
                 menuMath = new ContextMenu();
                 menuMath.Items.Add(miOperand);
@@ -376,8 +375,9 @@ namespace InputControlWPF.InputControls
                 menuMath.Items.Add(miResult);
                 menuMath.PlacementTarget = this;
                 menuMath.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                menuMath.PreviewKeyDown += OnMathPreviewKeyDown;
-                menuMath.Closed += OnMathClosed;
+
+                WeakEventManager<ContextMenu, KeyEventArgs>.AddHandler(menuMath, "PreviewKeyDown", this.OnMathPreviewKeyDown);
+                WeakEventManager<ContextMenu, RoutedEventArgs>.AddHandler(menuMath, "Closed", this.OnMathClosed);
                 menuMath.IsOpen = true;
                 return true;
             }
@@ -388,10 +388,11 @@ namespace InputControlWPF.InputControls
         private void OnMathPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
                 return;
+            }
 
             string operand = miOperand.Header.ToString();
-            //System.Diagnostics.Debug.WriteLine(string.Format("OnMathPreviewKeyDown {0}", e.Key.ToString()));
             switch (e.Key)
             {
                 case Key.Cancel:
@@ -405,9 +406,13 @@ namespace InputControlWPF.InputControls
                 case Key.Back:
                 case Key.Delete:
                     if (operand.Length > 0)
+                    {
                         UpdateResult(operand.Substring(0, operand.Length - 1));
+                    }
                     else
+                    {
                         OnResultClick(this, null);
+                    }
                     break;
 
                 case Key.LineFeed:
@@ -542,9 +547,9 @@ namespace InputControlWPF.InputControls
 
         private void OnMathClosed(object sender, RoutedEventArgs e)
         {
-            menuMath.PreviewKeyDown -= OnMathPreviewKeyDown;
-            menuMath.Closed -= OnMathClosed;
-            miResult.Click -= OnResultClick;
+            WeakEventManager<ContextMenu, KeyEventArgs>.RemoveHandler(menuMath, "PreviewKeyDown", this.OnMathPreviewKeyDown);
+            WeakEventManager<ContextMenu, RoutedEventArgs>.RemoveHandler(menuMath, "Closed", this.OnMathClosed);
+            WeakEventManager<MenuItem, RoutedEventArgs>.RemoveHandler(miResult, "Click", this.OnResultClick);
 
             menuMath = null;
             miOperand = null;
