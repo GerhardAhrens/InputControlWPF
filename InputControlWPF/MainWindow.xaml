@@ -22,8 +22,8 @@
                 ContentFrameColor="LightBlue">
                 <inputControl:TextBoxAll
                     Width="100"
-                    IsReadOnly="False"
                     HorizontalAlignment="Left"
+                    IsReadOnly="False"
                     SetBorder="True"
                     TabIndex="10" />
             </inputControl:ContentFrame>
@@ -63,6 +63,16 @@
                     Width="100"
                     TabIndex="13"
                     Text="Test" />
+            </inputControl:ContentFrame>
+
+            <inputControl:ContentFrame
+                Title="TextBox ReadOnly"
+                HorizontalAlignment="Left"
+                ContentFrameColor="LightSalmon">
+                <inputControl:TextBoxMath
+                    Width="100"
+                    TabIndex="14"
+                    Text="{Binding Path=ValueMath.Value, UpdateSourceTrigger=PropertyChanged}" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>
 
