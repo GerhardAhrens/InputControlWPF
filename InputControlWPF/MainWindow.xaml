@@ -22,6 +22,7 @@
                 ContentFrameColor="LightBlue">
                 <inputControl:TextBoxAll
                     Width="100"
+                    IsReadOnly="False"
                     HorizontalAlignment="Left"
                     SetBorder="True"
                     TabIndex="10" />

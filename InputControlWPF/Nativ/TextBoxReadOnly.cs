@@ -29,8 +29,6 @@ namespace InputControlWPF.InputControls
     {
         /* Definition der Path Geometry Icon für Kontextmenü */
         private const string ICON_COPY = "M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z";
-        private const string ICON_DELETE = "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z";
-        private const string ICON_CLOCK = "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z";
 
         public static readonly DependencyProperty ReadOnlyColorProperty =
             DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
@@ -193,18 +191,6 @@ namespace InputControlWPF.InputControls
             copyMenu.Icon = this.GetPathGeometry(ICON_COPY);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);
-
-            MenuItem deleteMenu = new MenuItem();
-            deleteMenu.Header = "Lösche Inhalt";
-            deleteMenu.Icon = this.GetPathGeometry(ICON_DELETE);
-            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
-            textBoxContextMenu.Items.Add(deleteMenu);
-
-            MenuItem setDateMenu = new MenuItem();
-            setDateMenu.Header = "Setze Datum";
-            setDateMenu.Icon = this.GetPathGeometry(ICON_CLOCK);
-            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(setDateMenu, "Click", this.OnSetDateMenu);
-            textBoxContextMenu.Items.Add(setDateMenu);
 
             return textBoxContextMenu;
         }

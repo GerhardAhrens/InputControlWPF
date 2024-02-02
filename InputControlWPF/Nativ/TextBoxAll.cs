@@ -210,23 +210,26 @@ namespace InputControlWPF.InputControls
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);
 
-            MenuItem pasteMenu = new MenuItem();
-            pasteMenu.Header = "Einfügen Inhalt";
-            pasteMenu.Icon = this.GetPathGeometry(ICON_PASTE);
-            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
-            textBoxContextMenu.Items.Add(pasteMenu);
+            if (this.IsReadOnly == false)
+            {
+                MenuItem pasteMenu = new MenuItem();
+                pasteMenu.Header = "Einfügen Inhalt";
+                pasteMenu.Icon = this.GetPathGeometry(ICON_PASTE);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
+                textBoxContextMenu.Items.Add(pasteMenu);
 
-            MenuItem deleteMenu = new MenuItem();
-            deleteMenu.Header = "Lösche Inhalt";
-            deleteMenu.Icon = this.GetPathGeometry(ICON_DELETE);
-            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
-            textBoxContextMenu.Items.Add(deleteMenu);
+                MenuItem deleteMenu = new MenuItem();
+                deleteMenu.Header = "Lösche Inhalt";
+                deleteMenu.Icon = this.GetPathGeometry(ICON_DELETE);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
+                textBoxContextMenu.Items.Add(deleteMenu);
 
-            MenuItem setDateMenu = new MenuItem();
-            setDateMenu.Header = "Setze Datum";
-            setDateMenu.Icon = this.GetPathGeometry(ICON_CLOCK);
-            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(setDateMenu, "Click", this.OnSetDateMenu);
-            textBoxContextMenu.Items.Add(setDateMenu);
+                MenuItem setDateMenu = new MenuItem();
+                setDateMenu.Header = "Setze Datum";
+                setDateMenu.Icon = this.GetPathGeometry(ICON_CLOCK);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(setDateMenu, "Click", this.OnSetDateMenu);
+                textBoxContextMenu.Items.Add(setDateMenu);
+            }
 
             return textBoxContextMenu;
         }
