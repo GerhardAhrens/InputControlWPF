@@ -12,12 +12,16 @@
         public MainWindow()
         {
             this.InitializeComponent();
+
+            this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär","Elefant","Hund","Zebra" };
+
             this.DataContext = this;
         }
 
         public XamlProperty<decimal> ValueDecimal { get; set; } = XamlProperty.Set<decimal>();
         public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

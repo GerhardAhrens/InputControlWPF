@@ -5,8 +5,80 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:InputControlWPF.InputControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="100"
-    d:DesignWidth="250"
+    d:DesignHeight="30"
+    d:DesignWidth="150"
     mc:Ignorable="d">
-    <Grid />
+
+    <UserControl.Resources>
+        <Image
+            x:Key="ButtonUp"
+            Width="15"
+            Height="11"
+            x:Shared="False">
+            <Image.Source>
+                <DrawingImage>
+                    <DrawingImage.Drawing>
+                        <GeometryDrawing Brush="Blue" Geometry="M7,15L12,10L17,15H7Z" />
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </Image.Source>
+        </Image>
+
+        <Image
+            x:Key="ButtonDown"
+            Width="10"
+            Height="11"
+            x:Shared="False">
+            <Image.Source>
+                <DrawingImage>
+                    <DrawingImage.Drawing>
+                        <GeometryDrawing Brush="Blue" Geometry="M7,10L12,15L17,10H7Z" />
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </Image.Source>
+        </Image>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox
+            x:Name="TextBoxStringUpDown"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Height="23"
+            MinWidth="100"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Arial"
+            FontSize="12" />
+
+        <Button
+            x:Name="BtnUp"
+            Grid.Row="0"
+            Grid.Column="1"
+            Width="20"
+            Height="11"
+            Content="{StaticResource ResourceKey=ButtonUp}"
+            Style="{StaticResource ResourceKey=FlatButtonStyle}" />
+
+        <Button
+            x:Name="BtnDown"
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="20"
+            Height="11"
+            Content="{StaticResource ResourceKey=ButtonDown}"
+            Style="{StaticResource ResourceKey=FlatButtonStyle}" />
+
+    </Grid>
 </UserControl>

@@ -74,9 +74,17 @@
                     TabIndex="14"
                     Text="{Binding Path=ValueMath.Value, UpdateSourceTrigger=PropertyChanged}" />
             </inputControl:ContentFrame>
+
+            <inputControl:ContentFrame
+                Title="TextBox String UpDown"
+                HorizontalAlignment="Left"
+                ContentFrameColor="LightBlue">
+                <inputControl:TextBoxUpDown
+                    Width="140"
+                    ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
+                    TabIndex="15" />
+            </inputControl:ContentFrame>
         </inputControl:ContentElements>
-
-
 
         <Button
             Width="100"

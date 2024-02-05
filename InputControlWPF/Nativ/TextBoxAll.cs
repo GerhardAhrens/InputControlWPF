@@ -49,7 +49,6 @@ namespace InputControlWPF.InputControls
             this.Margin = new Thickness(2);
             this.MinHeight = 18;
             this.Height = 23;
-            this.FontSize = 14;
             this.IsReadOnly = false;
             this.Focusable = true;
 
