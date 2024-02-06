@@ -22,12 +22,14 @@
         public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
+        public XamlProperty<string> ValueText { get; set; } = XamlProperty.Set<string>();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int valueInt = this.ValueInt.Value;
             decimal valueDec = this.ValueDecimal.Value;
             string valueMath = this.ValueMath.Value;
+            string valueText = this.ValueText.Value;
 
             MessageBox.Show(valueInt.ToString());
 

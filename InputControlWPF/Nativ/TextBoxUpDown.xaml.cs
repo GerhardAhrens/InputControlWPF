@@ -1,16 +1,7 @@
-﻿/*
- * https://stackoverflow.com/questions/9460034/custom-itemssource-property-for-a-usercontrol
- * https://www.codeproject.com/Articles/267601/Csharp-WPF-NET-ArrowRepeatButton-NumericUpDown
- * 
- */
-
-namespace InputControlWPF.InputControls
+﻿namespace InputControlWPF.InputControls
 {
-    using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -23,6 +14,7 @@ namespace InputControlWPF.InputControls
     {
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(TextBoxUpDown), new PropertyMetadata(null, OnItemsSourceChanged));
         public static readonly DependencyProperty DefaultValueProperty = DependencyProperty.Register("DefaultValue", typeof(string), typeof(TextBoxUpDown), new PropertyMetadata(string.Empty, OnDefaultValueChanged));
+        public static readonly DependencyProperty ResultValueProperty = DependencyProperty.Register("ResultValue", typeof(string), typeof(TextBoxUpDown), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxUpDown), new PropertyMetadata(true, OnSetBorderChanged));
 
         private static ICollectionView itemSource { get; set; }
@@ -50,6 +42,12 @@ namespace InputControlWPF.InputControls
             set { SetValue(DefaultValueProperty, value); }
         }
 
+        public string ResultValue
+        {
+            get { return (string)GetValue(ResultValueProperty); }
+            set { SetValue(ResultValueProperty, value); }
+        }
+
         public bool SetBorder
         {
             get { return (bool)GetValue(SetBorderProperty); }
@@ -64,6 +62,7 @@ namespace InputControlWPF.InputControls
                 if (control != null)
                 {
                     itemSource = CollectionViewSource.GetDefaultView(e.NewValue);
+                    itemSource.MoveCurrentToPrevious();
                     itemSource.MoveCurrentToFirst();
                     if (string.IsNullOrEmpty(defaultValue) == false)
                     {
@@ -71,6 +70,7 @@ namespace InputControlWPF.InputControls
                     }
 
                     control.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
+                    control.ResultValue = itemSource.CurrentItem.ToString();
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace InputControlWPF.InputControls
         {
             if (e.NewValue != null)
             {
-                var control = (TextBoxAll)d;
+                var control = (TextBoxUpDown)d;
 
                 if (e.NewValue.GetType() == typeof(bool))
                 {
@@ -115,6 +115,7 @@ namespace InputControlWPF.InputControls
             if (itemSource.IsCurrentBeforeFirst == false)
             {
                 this.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
+                this.ResultValue = itemSource.CurrentItem.ToString();
             }
         }
 
@@ -124,6 +125,7 @@ namespace InputControlWPF.InputControls
             if (itemSource.IsCurrentAfterLast == false)
             {
                 this.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
+                this.ResultValue = itemSource.CurrentItem.ToString();
             }
         }
     }

@@ -79,9 +79,11 @@
                 Title="TextBox String UpDown"
                 HorizontalAlignment="Left"
                 ContentFrameColor="LightBlue">
-                <inputControl:TextBoxUpDown DefaultValue="Bär"
+                <inputControl:TextBoxUpDown
                     Width="140"
+                    DefaultValue="Bär"
                     ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
+                    ResultValue="{Binding Path=ValueText.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     TabIndex="15" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>
