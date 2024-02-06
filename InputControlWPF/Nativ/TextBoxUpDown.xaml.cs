@@ -6,10 +6,14 @@
 
 namespace InputControlWPF.InputControls
 {
+    using System;
     using System.Collections;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
@@ -18,7 +22,11 @@ namespace InputControlWPF.InputControls
     public partial class TextBoxUpDown : UserControl
     {
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(TextBoxUpDown), new PropertyMetadata(null, OnItemsSourceChanged));
+        public static readonly DependencyProperty DefaultValueProperty = DependencyProperty.Register("DefaultValue", typeof(string), typeof(TextBoxUpDown), new PropertyMetadata(string.Empty, OnDefaultValueChanged));
         public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxUpDown), new PropertyMetadata(true, OnSetBorderChanged));
+
+        private static ICollectionView itemSource { get; set; }
+        private static string defaultValue { get; set; }
 
         public TextBoxUpDown()
         {
@@ -30,18 +38,16 @@ namespace InputControlWPF.InputControls
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnDown, "Click", this.OnClickDown);
         }
 
-        private void OnClickUp(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void OnClickDown(object sender, RoutedEventArgs e)
-        {
-        }
-
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        public string DefaultValue
+        {
+            get { return (string)GetValue(DefaultValueProperty); }
+            set { SetValue(DefaultValueProperty, value); }
         }
 
         public bool SetBorder
@@ -57,7 +63,26 @@ namespace InputControlWPF.InputControls
                 var control = d as TextBoxUpDown;
                 if (control != null)
                 {
-                    control.TextBoxStringUpDown.Text = ((List<string>)e.NewValue).First();
+                    itemSource = CollectionViewSource.GetDefaultView(e.NewValue);
+                    itemSource.MoveCurrentToFirst();
+                    if (string.IsNullOrEmpty(defaultValue) == false)
+                    {
+                        itemSource.MoveCurrentTo(defaultValue);
+                    }
+
+                    control.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
+                }
+            }
+        }
+
+        private static void OnDefaultValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                var control = d as TextBoxUpDown;
+                if (control != null)
+                {
+                    defaultValue = (string)e.NewValue;
                 }
             }
         }
@@ -81,6 +106,24 @@ namespace InputControlWPF.InputControls
                         control.BorderThickness = new Thickness(0);
                     }
                 }
+            }
+        }
+
+        private void OnClickUp(object sender, RoutedEventArgs e)
+        {
+            itemSource.MoveCurrentToPrevious();
+            if (itemSource.IsCurrentBeforeFirst == false)
+            {
+                this.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
+            }
+        }
+
+        private void OnClickDown(object sender, RoutedEventArgs e)
+        {
+            itemSource.MoveCurrentToNext();
+            if (itemSource.IsCurrentAfterLast == false)
+            {
+                this.TextBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
             }
         }
     }
