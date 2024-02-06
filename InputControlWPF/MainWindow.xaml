@@ -83,7 +83,7 @@
                     Width="140"
                     DefaultValue="Bär"
                     ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
-                    ResultValue="{Binding Path=ValueText.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ResultValue="{Binding Path=ValueText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     TabIndex="15" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>
