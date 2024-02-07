@@ -17,29 +17,16 @@
 namespace InputControlWPF.InputControls
 {
     using System;
-    using System.IO;
     using System.Text.RegularExpressions;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Imaging;
 
-    using Shapes = System.Windows.Shapes;
+    using InputControlWPF.NativCore;
 
     public class TextBoxMath : TextBox
     {
-        /* Definition der Path Geometry Icon für Kontextmenü */
-        private const string ICON_COPY = "M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z";
-        private const string ICON_PASTE = "M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z";
-        private const string ICON_DELETE = "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z";
-        private const string ICON_ADD = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
-        private const string ICON_EQUALS = "M19,10H5V8H19V10M19,16H5V14H19V16Z";
-        private const string ICON_MINUS = "M19,13H5V11H19V13Z";
-        private const string ICON_MULT = "M11,3H13V10.27L19.29,6.64L20.29,8.37L14,12L20.3,15.64L19.3,17.37L13,13.72V21H11V13.73L4.69,17.36L3.69,15.63L10,12L3.72,8.36L4.72,6.63L11,10.26V3Z";
-        private const string ICON_DIV = "M7 21L14.9 3H17L9.1 21H7Z";
-        private const string ICON_PERCENT = "M18.5 3.5L20.5 5.5L5.5 20.5L3.5 18.5L18.5 3.5M7 4C8.66 4 10 5.34 10 7C10 8.66 8.66 10 7 10C5.34 10 4 8.66 4 7C4 5.34 5.34 4 7 4M17 14C18.66 14 20 15.34 20 17C20 18.66 18.66 20 17 20C15.34 20 14 18.66 14 17C14 15.34 15.34 14 17 14M7 6C6.45 6 6 6.45 6 7C6 7.55 6.45 8 7 8C7.55 8 8 7.55 8 7C8 6.45 7.55 6 7 6M17 16C16.45 16 16 16.45 16 17C16 17.55 16.45 18 17 18C17.55 18 18 17.55 18 17C18 16.45 17.55 16 17 16Z";
-
         private static Regex regexDisallowedInteger = new Regex(@"[^0-9-]+");  // matches disallowed text
         private static Regex regexDisallowedFloat = new Regex(@"[^0-9-+.,e]+");  // matches disallowed text
 
@@ -154,7 +141,6 @@ namespace InputControlWPF.InputControls
                         break;
                 }
             }
-
         }
 
         private void MoveFocus(FocusNavigationDirection direction)
@@ -229,7 +215,7 @@ namespace InputControlWPF.InputControls
             ContextMenu textBoxContextMenu = new ContextMenu();
             MenuItem copyMenu = new MenuItem();
             copyMenu.Header = "Kopiere Inhalt";
-            copyMenu.Icon = this.GetPathGeometry(ICON_COPY);
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);
 
@@ -237,13 +223,13 @@ namespace InputControlWPF.InputControls
             {
                 MenuItem pasteMenu = new MenuItem();
                 pasteMenu.Header = "Einfügen Inhalt";
-                pasteMenu.Icon = this.GetPathGeometry(ICON_PASTE);
+                pasteMenu.Icon = Icons.GetPathGeometry(Icons.IconPaste);
                 WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
                 textBoxContextMenu.Items.Add(pasteMenu);
 
                 MenuItem deleteMenu = new MenuItem();
                 deleteMenu.Header = "Lösche Inhalt";
-                deleteMenu.Icon = this.GetPathGeometry(ICON_DELETE);
+                deleteMenu.Icon = Icons.GetPathGeometry(Icons.IconDelete);
                 WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
                 textBoxContextMenu.Items.Add(deleteMenu);
             }
@@ -271,46 +257,6 @@ namespace InputControlWPF.InputControls
             this.Text = DateTime.Now.ToShortDateString();
         }
 
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <param name="iconColor">Icon Farbe</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString, Color iconColor, int size = 24)
-        {
-            var path = new Shapes.Path
-            {
-                Height = size,
-                Width = size,
-                Fill = new SolidColorBrush(iconColor),
-                Data = Geometry.Parse(iconString)
-            };
-
-            return path;
-        }
-
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString, int size = 24)
-        {
-            return GetPathGeometry(iconString, Colors.Blue, size);
-        }
-
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString)
-        {
-            return GetPathGeometry(iconString,Colors.Blue);
-        }
-
-
         #region Math
         private enum EOperation { Add, Subtract, Multiply, Divide, Percent }
         private EOperation operation = EOperation.Add;
@@ -329,7 +275,7 @@ namespace InputControlWPF.InputControls
                     return false;
 
                 miOperand = new MenuItem();
-                miOperand.Header = "";
+                miOperand.Header = string.Empty;
                 miOperand.FontSize = 18;
                 miOperand.FontWeight = FontWeights.Medium;
                 miOperand.IsEnabled = false;
@@ -337,32 +283,32 @@ namespace InputControlWPF.InputControls
                 if (text == "+")
                 {
                     operation = EOperation.Add;
-                    miOperand.Icon = this.GetPathGeometry(ICON_ADD);
+                    miOperand.Icon = Icons.GetPathGeometry(Icons.IconAdd);
                 }
                 else if (text == "-")
                 {
                     operation = EOperation.Subtract;
-                    miOperand.Icon = this.GetPathGeometry(ICON_MINUS);
+                    miOperand.Icon = Icons.GetPathGeometry(Icons.IconMinus);
                 }
                 else if (text == "*")
                 {
                     operation = EOperation.Multiply;
-                    miOperand.Icon = this.GetPathGeometry(ICON_MULT);
+                    miOperand.Icon = Icons.GetPathGeometry(Icons.IconMult);
                 }
                 else if (text == "/")
                 {
                     operation = EOperation.Divide;
-                    miOperand.Icon = this.GetPathGeometry(ICON_DIV);
+                    miOperand.Icon = Icons.GetPathGeometry(Icons.IconDiv);
                 }
                 else if (text == "%")
                 {
                     operation = EOperation.Percent;
-                    miOperand.Icon = this.GetPathGeometry(ICON_PERCENT);
+                    miOperand.Icon = Icons.GetPathGeometry(Icons.IconPercent);
                 }
 
                 miResult = new MenuItem();
-                miResult.Header = "";
-                miResult.Icon = this.GetPathGeometry(ICON_EQUALS);
+                miResult.Header = string.Empty;
+                miResult.Icon = Icons.GetPathGeometry(Icons.IconEquals);
                 miResult.FontSize = 18;
                 miResult.FontWeight = FontWeights.Medium;
                 miResult.IsEnabled = false;

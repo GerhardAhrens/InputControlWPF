@@ -92,8 +92,8 @@
                 HorizontalAlignment="Left"
                 ContentFrameColor="LightBlue">
                 <inputControl:TextBoxIntegerUpDown
-                    Width="140"
-                    TabIndex="15"
+                    Width="140" Maximum="100"
+                    TabIndex="16"
                     Value="{Binding Path=ValueIntUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </inputControl:ContentFrame>
         </inputControl:ContentElements>

@@ -1,6 +1,5 @@
 ﻿namespace InputControlWPF.InputControls
 {
-    using System;
     using System.Collections;
     using System.ComponentModel;
     using System.Windows;
@@ -24,11 +23,15 @@
             this.InitializeComponent();
             this.TxTBoxStringUpDown.BorderBrush = Brushes.Green;
             this.TxTBoxStringUpDown.VerticalContentAlignment = VerticalAlignment.Center;
+            this.TxTBoxStringUpDown.VerticalAlignment = VerticalAlignment.Center;
+            this.TxTBoxStringUpDown.VerticalContentAlignment = VerticalAlignment.Center;
             this.TxTBoxStringUpDown.FontSize = 12.0;
             this.TxTBoxStringUpDown.FontFamily = new FontFamily("Arial");
             this.TxTBoxStringUpDown.BorderBrush = Brushes.Green;
             this.TxTBoxStringUpDown.Padding = new Thickness(0);
             this.TxTBoxStringUpDown.Margin = new Thickness(2);
+            this.TxTBoxStringUpDown.IsReadOnly = false;
+            this.TxTBoxStringUpDown.Focusable = true;
 
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnUp, "Click", this.OnClickUp);
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnDown, "Click", this.OnClickDown);

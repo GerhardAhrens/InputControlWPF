@@ -1,8 +1,4 @@
-﻿/*
- * https://www.codeproject.com/Articles/139629/A-Numeric-Up-Down-Control-for-WPF
- */
-
-namespace InputControlWPF.InputControls
+﻿namespace InputControlWPF.InputControls
 {
     using System;
     using System.Text.RegularExpressions;
@@ -10,6 +6,9 @@ namespace InputControlWPF.InputControls
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Shapes;
+
+    using InputControlWPF.NativCore;
 
     /// <summary>
     /// Interaktionslogik für TextBoxIntegerUpDown.xaml
@@ -22,6 +21,7 @@ namespace InputControlWPF.InputControls
         private static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
         private static readonly RoutedEvent IncreaseClickedEvent = EventManager.RegisterRoutedEvent("IncreaseClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
         private static readonly RoutedEvent DecreaseClickedEvent = EventManager.RegisterRoutedEvent("DecreaseClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
+
         private readonly Regex _numMatch;
 
         public TextBoxIntegerUpDown()
@@ -29,8 +29,11 @@ namespace InputControlWPF.InputControls
             this.InitializeComponent();
 
             _numMatch = new Regex(@"^-?\d+$");
+            this.Focusable = true;
+
             this.Maximum = int.MaxValue;
             this.Minimum = 0;
+
             this.TxtIntegerUpDown.Text = "0";
             this.TxtIntegerUpDown.HorizontalContentAlignment = HorizontalAlignment.Right;
             this.TxtIntegerUpDown.VerticalAlignment = VerticalAlignment.Center;
@@ -40,6 +43,14 @@ namespace InputControlWPF.InputControls
             this.TxtIntegerUpDown.BorderBrush = Brushes.Green;
             this.TxtIntegerUpDown.Padding = new Thickness(0);
             this.TxtIntegerUpDown.Margin = new Thickness(2);
+            this.TxtIntegerUpDown.IsReadOnly = false;
+            this.TxtIntegerUpDown.Focusable = true;
+
+            /* Trigger an Style übergeben */
+            this.TxtIntegerUpDown.Style = this.SetTriggerFunction();
+
+            /* Spezifisches Kontextmenü für Control übergeben */
+            this.TxtIntegerUpDown.ContextMenu = this.BuildContextMenu();
 
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnUp, "Click", this.OnClickUp);
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnDown, "Click", this.OnClickDown);
@@ -72,7 +83,6 @@ namespace InputControlWPF.InputControls
             get { return (int)GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
-
 
         public event RoutedEventHandler ValueChanged
         {
@@ -122,6 +132,12 @@ namespace InputControlWPF.InputControls
             var text = tb.Text.Insert(tb.CaretIndex, e.Text);
 
             e.Handled = !_numMatch.IsMatch(text);
+
+            if (this.Value > this.Maximum || this.Value < this.Minimum)
+            {
+                e.Handled = false;
+            }
+
         }
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
@@ -159,6 +175,42 @@ namespace InputControlWPF.InputControls
                 RaiseEvent(new RoutedEventArgs(DecreaseClickedEvent));
 
             }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            {
+                if (e.Key == Key.Tab)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        this.MoveFocus(FocusNavigationDirection.Previous);
+                        break;
+                    case Key.Down:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Left:
+                        return;
+                    case Key.Right:
+                        return;
+                    case Key.Pa1:
+                        return;
+                    case Key.End:
+                        return;
+                    case Key.Delete:
+                        return;
+                    case Key.Return:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Tab:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                }
+            }
         }
 
         private void ResetText(TextBox tb)
@@ -166,5 +218,68 @@ namespace InputControlWPF.InputControls
             tb.Text = 0 < Minimum ? Minimum.ToString() : "0";
             tb.SelectAll();
         }
+
+        private void MoveFocus(FocusNavigationDirection direction)
+        {
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
+
+            if (focusedElement != null)
+            {
+                if (focusedElement is TextBox)
+                {
+                    focusedElement.MoveFocus(new TraversalRequest(direction));
+                }
+            }
+        }
+
+        private Style SetTriggerFunction()
+        {
+            Style inputControlStyle = new Style();
+
+            /* Trigger für IsMouseOver = True */
+            Trigger triggerIsMouseOver = new Trigger();
+            triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
+            triggerIsMouseOver.Value = true;
+            triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            inputControlStyle.Triggers.Add(triggerIsMouseOver);
+
+            /* Trigger für IsFocused = True */
+            Trigger triggerIsFocused = new Trigger();
+            triggerIsFocused.Property = TextBox.IsFocusedProperty;
+            triggerIsFocused.Value = true;
+            triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            inputControlStyle.Triggers.Add(triggerIsFocused);
+
+            /* Trigger für IsFocused = True */
+            Trigger triggerIsReadOnly = new Trigger();
+            triggerIsReadOnly.Property = TextBox.IsReadOnlyProperty;
+            triggerIsReadOnly.Value = true;
+            triggerIsReadOnly.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightYellow });
+            inputControlStyle.Triggers.Add(triggerIsReadOnly);
+
+            return inputControlStyle;
+        }
+
+        /// <summary>
+        /// Spezifisches Kontextmenü erstellen
+        /// </summary>
+        /// <returns></returns>
+        private ContextMenu BuildContextMenu()
+        {
+            ContextMenu textBoxContextMenu = new ContextMenu();
+            MenuItem copyMenu = new MenuItem();
+            copyMenu.Header = "Kopiere Inhalt";
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
+            textBoxContextMenu.Items.Add(copyMenu);
+
+            return textBoxContextMenu;
+        }
+
+        private void OnCopyMenu(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TxtIntegerUpDown.Text);
+        }
+
     }
 }

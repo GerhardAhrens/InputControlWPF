@@ -23,18 +23,14 @@ namespace InputControlWPF.InputControls
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    using InputControlWPF.NativCore;
+
     using Shapes = System.Windows.Shapes;
 
     public class TextBoxReadOnly : TextBox
     {
-        /* Definition der Path Geometry Icon für Kontextmenü */
-        private const string ICON_COPY = "M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z";
-
-        public static readonly DependencyProperty ReadOnlyColorProperty =
-            DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
-
-        public static readonly DependencyProperty SetBorderProperty =
-            DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxReadOnly), new PropertyMetadata(true));
+        public static readonly DependencyProperty ReadOnlyColorProperty = DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxReadOnly), new PropertyMetadata(Brushes.LightYellow));
+        public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxReadOnly), new PropertyMetadata(true));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxReadOnly"/> class.
@@ -126,7 +122,6 @@ namespace InputControlWPF.InputControls
                         break;
                 }
             }
-
         }
 
         private void MoveFocus(FocusNavigationDirection direction)
@@ -188,7 +183,7 @@ namespace InputControlWPF.InputControls
             ContextMenu textBoxContextMenu = new ContextMenu();
             MenuItem copyMenu = new MenuItem();
             copyMenu.Header = "Kopiere Inhalt";
-            copyMenu.Icon = this.GetPathGeometry(ICON_COPY);
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);
 
@@ -198,55 +193,6 @@ namespace InputControlWPF.InputControls
         private void OnCopyMenu(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.Text);
-        }
-
-        private void OnDeleteMenu(object sender, RoutedEventArgs e)
-        {
-            this.Text = string.Empty;
-        }
-
-        private void OnSetDateMenu(object sender, RoutedEventArgs e)
-        {
-            this.Text = DateTime.Now.ToShortDateString();
-        }
-
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <param name="iconColor">Icon Farbe</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString, Color iconColor, int size = 24)
-        {
-            var path = new Shapes.Path
-            {
-                Height = size,
-                Width = size,
-                Fill = new SolidColorBrush(iconColor),
-                Data = Geometry.Parse(iconString)
-            };
-
-            return path;
-        }
-
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString, int size = 24)
-        {
-            return GetPathGeometry(iconString, Colors.Blue, size);
-        }
-
-        /// <summary>
-        /// Icon aus String für PathGeometry erstellen
-        /// </summary>
-        /// <param name="iconString">Icon String</param>
-        /// <returns></returns>
-        private Shapes.Path GetPathGeometry(string iconString)
-        {
-            return GetPathGeometry(iconString,Colors.Blue);
         }
     }
 }
