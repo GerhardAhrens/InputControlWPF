@@ -16,7 +16,7 @@
             this.InitializeComponent();
 
             this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär","Elefant","Hund","Zebra" };
-
+            this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year-5, 30).Select(x => (x - 1) + 1); 
             this.ValueIntUpDown.Value = 1;
             this.ValueStringUpDown.Value = "Bär";
 
@@ -28,6 +28,7 @@
         public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
+        public XamlProperty<IEnumerable<int>> ValueSourceYears { get; set; } = XamlProperty.Set<IEnumerable<int>>();
         public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
 
