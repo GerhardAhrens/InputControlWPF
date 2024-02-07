@@ -17,14 +17,19 @@
 
             this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär","Elefant","Hund","Zebra" };
 
+            this.ValueIntUpDown.Value = 1;
+            this.ValueStringUpDown.Value = "Bär";
+
             this.DataContext = this;
         }
 
+        public XamlProperty<string> ValueTextAll { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<decimal> ValueDecimal { get; set; } = XamlProperty.Set<decimal>();
         public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
-        //public XamlProperty<string> ValueText { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
 
         private string _ValueText;
         public string ValueText
@@ -35,12 +40,16 @@
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string valueTextAll = this.ValueTextAll.Value;
             int valueInt = this.ValueInt.Value;
             decimal valueDec = this.ValueDecimal.Value;
             string valueMath = this.ValueMath.Value;
-            string valueText = this.ValueText;
+            string valueStringUpDown = this.ValueStringUpDown.Value;
+            int valueIntUpDown = this.ValueIntUpDown.Value;
 
-            MessageBox.Show(valueInt.ToString());
+            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}";
+
+            MessageBox.Show(msg);
 
         }
 
