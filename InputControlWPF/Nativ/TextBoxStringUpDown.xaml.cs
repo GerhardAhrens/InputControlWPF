@@ -15,6 +15,7 @@
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(TextBoxStringUpDown), new PropertyMetadata(null, OnItemsSourceChanged));
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(TextBoxStringUpDown), new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnValuePropertyChanged)));
         public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxStringUpDown), new PropertyMetadata(true, OnSetBorderChanged));
+        public static readonly DependencyProperty WidthContentProperty = DependencyProperty.Register("WidthContent", typeof(double), typeof(TextBoxStringUpDown), new PropertyMetadata(100.0, OnWidthContentPropertyChanged));
 
         private static ICollectionView itemSource { get; set; }
 
@@ -59,6 +60,12 @@
             set { SetValue(SetBorderProperty, value); }
         }
 
+        public double WidthContent
+        {
+            get { return (double)GetValue(WidthContentProperty); }
+            set { SetValue(WidthContentProperty, value); }
+        }
+
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
@@ -74,8 +81,28 @@
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            TextBoxStringUpDown control = d as TextBoxStringUpDown;
-            control.TxTBoxStringUpDown.Text = e.NewValue.ToString();
+            if (e.NewValue != null)
+            {
+                TextBoxStringUpDown control = d as TextBoxStringUpDown;
+                control.TxTBoxStringUpDown.Text = e.NewValue.ToString();
+            }
+        }
+
+        private static void OnWidthContentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                TextBoxStringUpDown control = d as TextBoxStringUpDown;
+                double resultValue = 0;
+                if (double.TryParse(e.NewValue.ToString(), out resultValue) == true)
+                {
+                    control.TxTBoxStringUpDown.Width = resultValue;
+                }
+                else
+                {
+                    control.TxTBoxStringUpDown.Width = 100;
+                }
+            }
         }
 
         private static void OnSetBorderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

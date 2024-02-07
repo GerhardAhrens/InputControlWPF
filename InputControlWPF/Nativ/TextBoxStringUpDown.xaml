@@ -55,7 +55,7 @@
             Grid.RowSpan="2"
             Grid.Column="0"
             Height="23"
-            MinWidth="100"
+            MinWidth="50"
             Margin="2"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
