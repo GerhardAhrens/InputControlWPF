@@ -18,6 +18,7 @@
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(int), typeof(TextBoxIntegerUpDown), new PropertyMetadata(0, new PropertyChangedCallback(OnValuePropertyChanged)));
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(int), typeof(TextBoxIntegerUpDown), new UIPropertyMetadata(100));
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(int), typeof(TextBoxIntegerUpDown), new UIPropertyMetadata(0));
+        public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxIntegerUpDown), new PropertyMetadata(true, OnSetBorderChanged));
         private static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
         private static readonly RoutedEvent IncreaseClickedEvent = EventManager.RegisterRoutedEvent("IncreaseClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
         private static readonly RoutedEvent DecreaseClickedEvent = EventManager.RegisterRoutedEvent("DecreaseClicked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TextBoxIntegerUpDown));
@@ -84,6 +85,12 @@
             set { SetValue(MinimumProperty, value); }
         }
 
+        public bool SetBorder
+        {
+            get { return (bool)GetValue(SetBorderProperty); }
+            set { SetValue(SetBorderProperty, value); }
+        }
+
         public event RoutedEventHandler ValueChanged
         {
             add { AddHandler(ValueChangedEvent, value); }
@@ -106,6 +113,28 @@
         {
             TextBoxIntegerUpDown control = target as TextBoxIntegerUpDown;
             control.TxtIntegerUpDown.Text = e.NewValue.ToString();
+        }
+
+        private static void OnSetBorderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                var control = (TextBoxStringUpDown)d;
+
+                if (e.NewValue.GetType() == typeof(bool))
+                {
+                    if ((bool)e.NewValue == true)
+                    {
+                        control.BorderBrush = Brushes.Green;
+                        control.BorderThickness = new Thickness(1);
+                    }
+                    else
+                    {
+                        control.BorderBrush = Brushes.Transparent;
+                        control.BorderThickness = new Thickness(0);
+                    }
+                }
+            }
         }
 
         private void OnClickDown(object sender, RoutedEventArgs e)

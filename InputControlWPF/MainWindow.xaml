@@ -83,6 +83,7 @@
                 <inputControl:TextBoxStringUpDown
                     Width="140"
                     ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
+                    SetBorder="False"
                     TabIndex="15"
                     Value="{Binding Path=ValueStringUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </inputControl:ContentFrame>
@@ -92,7 +93,9 @@
                 HorizontalAlignment="Left"
                 ContentFrameColor="LightBlue">
                 <inputControl:TextBoxIntegerUpDown
-                    Width="140" Maximum="100"
+                    Width="140"
+                    Maximum="100"
+                    SetBorder="True"
                     TabIndex="16"
                     Value="{Binding Path=ValueIntUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </inputControl:ContentFrame>
