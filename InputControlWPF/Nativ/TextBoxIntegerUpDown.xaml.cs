@@ -332,6 +332,5 @@
         {
             Clipboard.SetText(this.TxtIntegerUpDown.Text);
         }
-
     }
 }

@@ -5,7 +5,10 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Input;
     using System.Windows.Media;
+
+    using InputControlWPF.NativCore;
 
     /// <summary>
     /// Interaktionslogik für TextBoxStringUpDown.xaml
@@ -34,8 +37,15 @@
             this.TxTBoxStringUpDown.IsReadOnly = false;
             this.TxTBoxStringUpDown.Focusable = true;
 
+            /* Trigger an Style übergeben */
+            this.TxTBoxStringUpDown.Style = this.SetTriggerFunction();
+
+            /* Spezifisches Kontextmenü für Control übergeben */
+            this.TxTBoxStringUpDown.ContextMenu = this.BuildContextMenu();
+
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnUp, "Click", this.OnClickUp);
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnDown, "Click", this.OnClickDown);
+            WeakEventManager<TextBox, KeyEventArgs>.AddHandler(this.TxTBoxStringUpDown, "PreviewKeyDown", this.OnPreviewKeyDown);
         }
 
         public IEnumerable ItemsSource
@@ -127,6 +137,45 @@
             }
         }
 
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            {
+                if (e.Key == Key.Tab)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        this.MoveFocus(FocusNavigationDirection.Previous);
+                        break;
+                    case Key.Down:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Left:
+                        return;
+                    case Key.Right:
+                        return;
+                    case Key.Pa1:
+                        return;
+                    case Key.End:
+                        return;
+                    case Key.Delete:
+                        return;
+                    case Key.Return:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                    case Key.Tab:
+                        this.MoveFocus(FocusNavigationDirection.Next);
+                        break;
+                }
+            }
+        }
+
         private void OnClickUp(object sender, RoutedEventArgs e)
         {
             itemSource.MoveCurrentToPrevious();
@@ -145,6 +194,68 @@
                 this.TxTBoxStringUpDown.Text = itemSource.CurrentItem.ToString();
                 this.Value = itemSource.CurrentItem.ToString();
             }
+        }
+
+        private void MoveFocus(FocusNavigationDirection direction)
+        {
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
+
+            if (focusedElement != null)
+            {
+                if (focusedElement is TextBox)
+                {
+                    focusedElement.MoveFocus(new TraversalRequest(direction));
+                }
+            }
+        }
+
+        private Style SetTriggerFunction()
+        {
+            Style inputControlStyle = new Style();
+
+            /* Trigger für IsMouseOver = True */
+            Trigger triggerIsMouseOver = new Trigger();
+            triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
+            triggerIsMouseOver.Value = true;
+            triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            inputControlStyle.Triggers.Add(triggerIsMouseOver);
+
+            /* Trigger für IsFocused = True */
+            Trigger triggerIsFocused = new Trigger();
+            triggerIsFocused.Property = TextBox.IsFocusedProperty;
+            triggerIsFocused.Value = true;
+            triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            inputControlStyle.Triggers.Add(triggerIsFocused);
+
+            /* Trigger für IsFocused = True */
+            Trigger triggerIsReadOnly = new Trigger();
+            triggerIsReadOnly.Property = TextBox.IsReadOnlyProperty;
+            triggerIsReadOnly.Value = true;
+            triggerIsReadOnly.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightYellow });
+            inputControlStyle.Triggers.Add(triggerIsReadOnly);
+
+            return inputControlStyle;
+        }
+
+        /// <summary>
+        /// Spezifisches Kontextmenü erstellen
+        /// </summary>
+        /// <returns></returns>
+        private ContextMenu BuildContextMenu()
+        {
+            ContextMenu textBoxContextMenu = new ContextMenu();
+            MenuItem copyMenu = new MenuItem();
+            copyMenu.Header = "Kopiere Inhalt";
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
+            textBoxContextMenu.Items.Add(copyMenu);
+
+            return textBoxContextMenu;
+        }
+
+        private void OnCopyMenu(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.TxTBoxStringUpDown.Text);
         }
     }
 }

@@ -145,7 +145,7 @@ namespace InputControlWPF.InputControls
             Trigger triggerIsMouseOver = new Trigger();
             triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
             triggerIsMouseOver.Value = true;
-            triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = this.ReadOnlyColor });
             textBoxStyle.Triggers.Add(triggerIsMouseOver);
 
             /* Trigger für IsMouseOver = false */
@@ -161,7 +161,7 @@ namespace InputControlWPF.InputControls
             Trigger triggerIsFocused = new Trigger();
             triggerIsFocused.Property = TextBox.IsFocusedProperty;
             triggerIsFocused.Value = true;
-            triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = this.ReadOnlyColor });
             textBoxStyle.Triggers.Add(triggerIsFocused);
 
             /* Trigger für IsFocused = false */
