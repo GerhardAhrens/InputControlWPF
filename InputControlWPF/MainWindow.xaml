@@ -10,106 +10,130 @@
     Height="450"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Horizontal">
+        <GroupBox Header="TextBox Elements">
+            <StackPanel Orientation="Vertical">
 
-        <inputControl:ContentElements
-            BorderBrush="Black"
-            BorderThickness="1"
-            KeyboardNavigation.DirectionalNavigation="Contained">
-            <inputControl:ContentFrame
-                Title="TextBox alle Zeichen"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightBlue">
-                <inputControl:TextBoxAll
+                <inputControl:ContentElements
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    KeyboardNavigation.DirectionalNavigation="Contained">
+                    <inputControl:ContentFrame
+                        Title="TextBox alle Zeichen"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightBlue">
+                        <inputControl:TextBoxAll
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            IsReadOnly="False"
+                            SetBorder="True"
+                            TabIndex="10"
+                            Text="{Binding Path=ValueTextAll.Value, UpdateSourceTrigger=PropertyChanged}" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox Integer"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightBlue">
+                        <inputControl:TextBoxInt
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            IsNegative="True"
+                            IsReadOnly="False"
+                            Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"
+                            TabIndex="11" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox Decimal"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="WhiteSmoke">
+                        <inputControl:TextBoxDecimal
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            DecimalPlaces="2"
+                            IsNegative="True"
+                            IsReadOnly="False"
+                            Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}"
+                            TabIndex="12" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox ReadOnly"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightSalmon">
+                        <inputControl:TextBoxReadOnly
+                            Width="100"
+                            TabIndex="13"
+                            Text="Test" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox Rechnen"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightSalmon">
+                        <inputControl:TextBoxMath
+                            Width="100"
+                            TabIndex="14"
+                            Text="{Binding Path=ValueMath.Value, UpdateSourceTrigger=PropertyChanged}" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox String UpDown"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightBlue">
+                        <inputControl:TextBoxStringUpDown
+                            Width="140"
+                            ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
+                            SetBorder="False"
+                            TabIndex="15"
+                            WidthContent="90"
+                            Value="{Binding Path=ValueStringUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBox Integer UpDown"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightBlue">
+                        <inputControl:TextBoxIntegerUpDown
+                            Width="140"
+                            Maximum="100"
+                            SetBorder="True"
+                            TabIndex="16"
+                            WidthContent="80"
+                            Value="{Binding Path=ValueIntUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </inputControl:ContentFrame>
+                </inputControl:ContentElements>
+
+                <Button
                     Width="100"
+                    Height="30"
                     HorizontalAlignment="Left"
-                    IsReadOnly="False"
-                    SetBorder="True"
-                    TabIndex="10"
-                    Text="{Binding Path=ValueTextAll.Value, UpdateSourceTrigger=PropertyChanged}" />
-            </inputControl:ContentFrame>
+                    Click="Button_Click"
+                    Content="Klick"
+                    TabIndex="20" />
+            </StackPanel>
+        </GroupBox>
 
-            <inputControl:ContentFrame
-                Title="TextBox Integer"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightBlue">
-                <inputControl:TextBoxInt
+        <GroupBox Header="ListBox Elements">
+            <StackPanel Orientation="Vertical">
+                <inputControl:MultiSelectListbox
+                    Width="200"
+                    Height="100"
+                    VerticalAlignment="Top"
+                    ItemsSource="{Binding Path=ValueSourceStrings.Value}"
+                    SelectedItemsList="{Binding Path=MultiSelecteds, Mode=TwoWay}"
+                    SelectionMode="Extended" />
+
+                <Button
+                    x:Name="GroupBox2"
                     Width="100"
+                    Height="30"
                     HorizontalAlignment="Left"
-                    IsNegative="True"
-                    IsReadOnly="False"
-                    Number="{Binding Path=ValueInt.Value, UpdateSourceTrigger=PropertyChanged}"
-                    TabIndex="11" />
-            </inputControl:ContentFrame>
+                    Click="GroupBox2_Click"
+                    Content="Klick" />
 
-            <inputControl:ContentFrame
-                Title="TextBox Decimal"
-                HorizontalAlignment="Left"
-                ContentFrameColor="WhiteSmoke">
-                <inputControl:TextBoxDecimal
-                    Width="100"
-                    HorizontalAlignment="Left"
-                    DecimalPlaces="2"
-                    IsNegative="True"
-                    IsReadOnly="False"
-                    Number="{Binding Path=ValueDecimal.Value, UpdateSourceTrigger=PropertyChanged}"
-                    TabIndex="12" />
-            </inputControl:ContentFrame>
-
-            <inputControl:ContentFrame
-                Title="TextBox ReadOnly"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightSalmon">
-                <inputControl:TextBoxReadOnly
-                    Width="100"
-                    TabIndex="13"
-                    Text="Test" />
-            </inputControl:ContentFrame>
-
-            <inputControl:ContentFrame
-                Title="TextBox Rechnen"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightSalmon">
-                <inputControl:TextBoxMath
-                    Width="100"
-                    TabIndex="14"
-                    Text="{Binding Path=ValueMath.Value, UpdateSourceTrigger=PropertyChanged}" />
-            </inputControl:ContentFrame>
-
-            <inputControl:ContentFrame
-                Title="TextBox String UpDown"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightBlue">
-                <inputControl:TextBoxStringUpDown
-                    Width="140"
-                    ItemsSource="{Binding Path=ValueSourceStrings.Value, UpdateSourceTrigger=PropertyChanged}"
-                    SetBorder="False"
-                    TabIndex="15"
-                    WidthContent="90"
-                    Value="{Binding Path=ValueStringUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            </inputControl:ContentFrame>
-
-            <inputControl:ContentFrame
-                Title="TextBox Integer UpDown"
-                HorizontalAlignment="Left"
-                ContentFrameColor="LightBlue">
-                <inputControl:TextBoxIntegerUpDown
-                    Width="140"
-                    Maximum="100"
-                    WidthContent="80"
-                    SetBorder="True"
-                    TabIndex="16"
-                    Value="{Binding Path=ValueIntUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-            </inputControl:ContentFrame>
-        </inputControl:ContentElements>
-
-        <Button
-            Width="100"
-            Height="30"
-            HorizontalAlignment="Left"
-            Click="Button_Click"
-            Content="Klick"
-            TabIndex="20" />
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
-
 </Window>

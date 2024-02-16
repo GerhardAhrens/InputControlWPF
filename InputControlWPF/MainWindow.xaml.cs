@@ -39,6 +39,27 @@
             set { SetField(ref _ValueText, value); }
         }
 
+        private List<string> _MultiSelecteds;
+        public List<string> MultiSelecteds
+        {
+            get { return _MultiSelecteds; }
+            set
+            { 
+                SetField(ref _MultiSelecteds, value);
+                SelectedsString = string.Join(",", MultiSelecteds.Select(s => s));
+            }
+        }
+
+        private string _SelectedsString;
+        public string SelectedsString
+        {
+            get { return _SelectedsString; }
+            set
+            {
+                SetField(ref _SelectedsString, value);
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string valueTextAll = this.ValueTextAll.Value;
@@ -72,5 +93,11 @@
             return true;
         }
         #endregion PropertyChanged Implementierung
+
+        private void GroupBox2_Click(object sender, RoutedEventArgs e)
+        {
+            string msg = $"{this.SelectedsString}";
+            MessageBox.Show(msg);
+        }
     }
 }
