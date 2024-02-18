@@ -121,9 +121,9 @@
                     Width="200"
                     Height="100"
                     VerticalAlignment="Top"
+                    IsReadOnly="False"
                     ItemsSource="{Binding Path=ValueSourceStrings.Value}"
-                    SelectedItemsList="{Binding Path=MultiSelecteds, Mode=TwoWay}"
-                    SelectionMode="Extended" />
+                    SelectedItemsList="{Binding Path=MultiSelecteds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Button
                     x:Name="GroupBox2"
@@ -131,8 +131,15 @@
                     Height="30"
                     HorizontalAlignment="Left"
                     Click="GroupBox2_Click"
-                    Content="Klick" />
+                    Content="Get Values" />
 
+                <Button
+                    x:Name="GroupBox3"
+                    Width="100"
+                    Height="30"
+                    HorizontalAlignment="Left"
+                    Click="GroupBox3_Click"
+                    Content="Set Values" />
             </StackPanel>
         </GroupBox>
     </StackPanel>

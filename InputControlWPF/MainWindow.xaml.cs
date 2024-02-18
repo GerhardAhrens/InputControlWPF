@@ -99,5 +99,10 @@
             string msg = $"{this.SelectedsString}";
             MessageBox.Show(msg);
         }
+
+        private void GroupBox3_Click(object sender, RoutedEventArgs e)
+        {
+            this.MultiSelecteds = new List<string> { "Elefant", "Hund" };
+        }
     }
 }
