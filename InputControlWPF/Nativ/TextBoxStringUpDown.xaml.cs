@@ -140,11 +140,22 @@
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var tb = (TextBox)sender;
-            itemSource.Filter = p => p.ToString().ToLower().Contains(tb.Text.ToLower()) == true;
-            if (itemSource.IsEmpty == true)
+            TextBox tb = (TextBox)sender;
+            if (tb != null)
             {
-                ResetText(tb);
+                tb.SelectAll();
+                itemSource.Filter = p => p.ToString().ToLower().Contains(tb.Text.ToLower()) == true;
+                if (itemSource.IsEmpty == true)
+                {
+                    ResetText(tb);
+                }
+                else
+                {
+                    if (itemSource.CurrentItem != null)
+                    {
+                        //tb.Text = itemSource.CurrentItem.ToString();
+                    }
+                }
             }
         }
 
