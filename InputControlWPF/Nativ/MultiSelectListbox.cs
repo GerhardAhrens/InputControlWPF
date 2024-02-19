@@ -20,6 +20,7 @@ namespace InputControlWPF.InputControls
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Reflection.Emit;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -112,10 +113,16 @@ namespace InputControlWPF.InputControls
                         fef.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
 
                         FrameworkElementFactory cb = new FrameworkElementFactory(typeof(CheckBox));
-                        //CheckBox.MarginProperty = 
                         cb.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(CheckedChanged));
                         cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(CheckedChanged));
+                        cb.SetValue(CheckBox.MarginProperty, new Thickness(0,0,5,0));
                         fef.AppendChild(cb);
+
+                        /*
+                        FrameworkElementFactory label = new FrameworkElementFactory(typeof(System.Windows.Controls.Label));
+                        label.SetValue(System.Windows.Controls.Label.WidthProperty, 5d);
+                        fef.AppendChild(label);
+                        */
 
                         FrameworkElementFactory tb = new FrameworkElementFactory(typeof(TextBlock));
                         tb.SetBinding(TextBlock.TextProperty, new Binding(lb.DisplayMemberPath));
@@ -191,6 +198,7 @@ namespace InputControlWPF.InputControls
         {
             if (e.NewValue != null)
             {
+                /*
                 var control = (MultiSelectListbox)d;
                 if (e.NewValue.GetType().IsGenericType == true)
                 {
@@ -200,6 +208,7 @@ namespace InputControlWPF.InputControls
                         FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
                     }
                 }
+                */
             }
         }
 
