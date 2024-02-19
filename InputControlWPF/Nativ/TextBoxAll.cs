@@ -33,8 +33,8 @@ namespace InputControlWPF.InputControls
         /// </summary>
         public TextBoxAll()
         {
-            this.FontSize = 12.0;
-            this.FontFamily = new FontFamily("Arial");
+            this.FontSize = ControlBase.FontSize;
+            this.FontFamily = ControlBase.FontFamily;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Margin = new Thickness(2);

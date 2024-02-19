@@ -59,7 +59,6 @@
             Margin="2"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            FontFamily="Arial"
             FontSize="12" />
 
         <Button
