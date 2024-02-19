@@ -46,6 +46,7 @@
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnUp, "Click", this.OnClickUp);
             WeakEventManager<Button, RoutedEventArgs>.AddHandler(this.BtnDown, "Click", this.OnClickDown);
             WeakEventManager<TextBox, KeyEventArgs>.AddHandler(this.TxTBoxStringUpDown, "PreviewKeyDown", this.OnPreviewKeyDown);
+            WeakEventManager<TextBox, TextChangedEventArgs>.AddHandler(this.TxTBoxStringUpDown, "TextChanged", this.OnTextChanged);
         }
 
         public IEnumerable ItemsSource
@@ -135,6 +136,23 @@
                     }
                 }
             }
+        }
+
+        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            itemSource.Filter = p => p.ToString().ToLower().Contains(tb.Text.ToLower()) == true;
+            if (itemSource.IsEmpty == true)
+            {
+                ResetText(tb);
+            }
+        }
+
+        private void ResetText(TextBox tb)
+        {
+            itemSource.MoveCurrentToFirst();
+            tb.Text = itemSource.SourceCollection.Cast<string>().First();
+            tb.SelectAll();
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
