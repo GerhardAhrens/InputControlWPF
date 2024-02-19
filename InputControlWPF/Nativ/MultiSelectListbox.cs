@@ -20,11 +20,12 @@ namespace InputControlWPF.InputControls
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Reflection.Emit;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Media;
+
+    using InputControlWPF.NativCore;
 
     public class MultiSelectListbox : ListBox
     {
@@ -32,7 +33,7 @@ namespace InputControlWPF.InputControls
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(MultiSelectListbox), new PropertyMetadata(false, OnIsReadOnlyChanged));
         public static readonly DependencyProperty SelectedItemsListProperty = DependencyProperty.Register("SelectedItemsList", typeof(IList), typeof(MultiSelectListbox), new PropertyMetadata(null, OnSelectedItemsListChange));
-
+        private static MultiSelectListbox self;
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiSelectListbox"/> class.
         /// </summary>
@@ -47,7 +48,10 @@ namespace InputControlWPF.InputControls
 
             WeakEventManager<MultiSelectListbox, RoutedEventArgs>.AddHandler(this, "Loaded", OnLoaded);
             WeakEventManager<MultiSelectListbox, SelectionChangedEventArgs>.AddHandler(this, "SelectionChanged", OnSelectionChanged);
+            self = this;
 
+            /* Spezifisches Kontextmenü für Control übergeben */
+            this.ContextMenu = this.BuildContextMenu();
         }
 
         static MultiSelectListbox()
@@ -117,12 +121,6 @@ namespace InputControlWPF.InputControls
                         cb.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(CheckedChanged));
                         cb.SetValue(CheckBox.MarginProperty, new Thickness(0,0,5,0));
                         fef.AppendChild(cb);
-
-                        /*
-                        FrameworkElementFactory label = new FrameworkElementFactory(typeof(System.Windows.Controls.Label));
-                        label.SetValue(System.Windows.Controls.Label.WidthProperty, 5d);
-                        fef.AppendChild(label);
-                        */
 
                         FrameworkElementFactory tb = new FrameworkElementFactory(typeof(TextBlock));
                         tb.SetBinding(TextBlock.TextProperty, new Binding(lb.DisplayMemberPath));
@@ -198,17 +196,66 @@ namespace InputControlWPF.InputControls
         {
             if (e.NewValue != null)
             {
-                /*
+
                 var control = (MultiSelectListbox)d;
                 if (e.NewValue.GetType().IsGenericType == true)
                 {
-                    foreach (string item in control.ItemsSource)
+                    var selectItems = (IList)e.NewValue;
+                    foreach (object item in control.ItemsSource)
                     {
-                        ListBoxItem lbi = control.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                        FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
+                        foreach (var selectItem in selectItems)
+                        {
+                            if (item.Equals(selectItem) == true)
+                            {
+                                ListBoxItem lbi = control.ItemContainerGenerator.ContainerFromItem(selectItem) as ListBoxItem;
+                                WeakEventManager<MultiSelectListbox, SelectionChangedEventArgs>.RemoveHandler(self, "SelectionChanged", OnSelectionChanged);
+                                FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
+                                WeakEventManager<MultiSelectListbox, SelectionChangedEventArgs>.AddHandler(self, "SelectionChanged", OnSelectionChanged);
+                            }
+                        }
                     }
                 }
-                */
+            }
+        }
+
+        /// <summary>
+        /// Spezifisches Kontextmenü erstellen
+        /// </summary>
+        /// <returns></returns>
+        private ContextMenu BuildContextMenu()
+        {
+            ContextMenu textBoxContextMenu = new ContextMenu();
+
+            MenuItem allCheckMenu = new MenuItem();
+            allCheckMenu.Header = "Alle markieren";
+            allCheckMenu.Icon = Icons.GetPathGeometry(Icons.IconCheckAll);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(allCheckMenu, "Click", this.OnCheckAll);
+            textBoxContextMenu.Items.Add(allCheckMenu);
+
+            MenuItem unCheckMenu = new MenuItem();
+            unCheckMenu.Header = "Keine markieren";
+            unCheckMenu.Icon = Icons.GetPathGeometry(Icons.IconUnCheck);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(unCheckMenu, "Click", this.OnUnCheck);
+            textBoxContextMenu.Items.Add(unCheckMenu);
+
+            return textBoxContextMenu;
+        }
+
+        private void OnCheckAll(object sender, RoutedEventArgs e)
+        {
+            foreach (object item in self.ItemsSource)
+            {
+                ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
+            }
+        }
+
+        private void OnUnCheck(object sender, RoutedEventArgs e)
+        {
+            foreach (object item in self.ItemsSource)
+            {
+                ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = false;
             }
         }
 
