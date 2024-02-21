@@ -1,4 +1,9 @@
-﻿namespace InputControlWPF
+﻿/*
+ * https://stackoverflow.com/questions/3227462/how-to-add-string-with-the-style-add-into-resourcedictionary-in-wpf
+ * https://stackoverflow.com/questions/910814/loading-xaml-at-runtime
+ */
+
+namespace InputControlWPF
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
@@ -19,6 +24,8 @@
             this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year-5, 30).Select(x => (x - 1) + 1); 
             this.ValueIntUpDown.Value = 1;
             this.ValueStringUpDown.Value = "Bär";
+
+            Style aa = LoadXaml<Style>(StyleString());
 
             this.DataContext = this;
         }
@@ -103,6 +110,24 @@
         private void GroupBox3_Click(object sender, RoutedEventArgs e)
         {
             this.MultiSelecteds = new List<string> { "Elefant", "Hund" };
+        }
+
+
+        private string StyleString()
+        {
+            string styleText = @" <Style xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""> " +
+                                " <Style TargetType=\"Button\"> " +
+                                "<Setter Property=\"Background\" Value=\"Yellow\" />" +
+                            "</Style>";
+
+            return styleText;
+        }
+
+        public T LoadXaml<T>(string xaml)
+        {
+            using (var stringReader = new System.IO.StringReader(xaml))
+            using (var xmlReader = System.Xml.XmlReader.Create(stringReader))
+                return (T)System.Windows.Markup.XamlReader.Load(xmlReader);
         }
     }
 }
