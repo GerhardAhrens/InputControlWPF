@@ -82,7 +82,7 @@ namespace InputControlWPF
             string valueStringUpDown = this.ValueStringUpDown.Value;
             int valueIntUpDown = this.ValueIntUpDown.Value;
 
-            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}";
+            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxDecimal={valueDec}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}";
 
             MessageBox.Show(msg);
 
