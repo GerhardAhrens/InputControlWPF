@@ -246,7 +246,10 @@ namespace InputControlWPF.InputControls
             foreach (object item in self.ItemsSource)
             {
                 ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
+                if (lbi != null)
+                {
+                    FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
+                }
             }
         }
 
@@ -255,7 +258,10 @@ namespace InputControlWPF.InputControls
             foreach (object item in self.ItemsSource)
             {
                 ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
-                FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = false;
+                if (lbi != null)
+                {
+                    FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = false;
+                }
             }
         }
 
