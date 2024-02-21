@@ -7,9 +7,11 @@ namespace InputControlWPF
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Text;
     using System.Windows;
 
     using InputControlWPF.Core;
+    using InputControlWPF.NativCore;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -25,7 +27,11 @@ namespace InputControlWPF
             this.ValueIntUpDown.Value = 1;
             this.ValueStringUpDown.Value = "Bär";
 
-            Style aa = LoadXaml<Style>(StyleString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
+            string styleText = new StyleText().Add("Button", stringBuilder).Value;
+            Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
+            this.BtnGetValueTxt.Style = buttonStyle;
 
             this.DataContext = this;
         }
@@ -110,24 +116,6 @@ namespace InputControlWPF
         private void GroupBox3_Click(object sender, RoutedEventArgs e)
         {
             this.MultiSelecteds = new List<string> { "Elefant", "Hund" };
-        }
-
-
-        private string StyleString()
-        {
-            string styleText = @" <Style xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""> " +
-                                " <Style TargetType=\"Button\"> " +
-                                "<Setter Property=\"Background\" Value=\"Yellow\" />" +
-                            "</Style>";
-
-            return styleText;
-        }
-
-        public T LoadXaml<T>(string xaml)
-        {
-            using (var stringReader = new System.IO.StringReader(xaml))
-            using (var xmlReader = System.Xml.XmlReader.Create(stringReader))
-                return (T)System.Windows.Markup.XamlReader.Load(xmlReader);
         }
     }
 }

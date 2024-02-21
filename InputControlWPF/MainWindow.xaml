@@ -106,6 +106,7 @@
                 </inputControl:ContentElements>
 
                 <Button
+                    x:Name="BtnGetValueTxt"
                     Width="100"
                     Height="30"
                     HorizontalAlignment="Left"
