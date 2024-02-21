@@ -83,5 +83,16 @@ namespace InputControlWPF.NativCore
             text.AppendLine("</Style>");
             return this;
         }
+
+        public StyleText Add(string tagetType, string content)
+        {
+            text.AppendLine("<Style").Append(" ");
+            text.AppendLine($"xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"").Append(" ");
+            text.AppendLine($"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"").Append(" ");
+            text.AppendLine($"TargetType=\"{tagetType}\">").Append(" ");
+            text.Insert(text.Length - 1, content);
+            text.AppendLine("</Style>");
+            return this;
+        }
     }
 }

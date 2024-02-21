@@ -27,9 +27,13 @@ namespace InputControlWPF
             this.ValueIntUpDown.Value = 1;
             this.ValueStringUpDown.Value = "Bär";
 
+            /*
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
-            string styleText = new StyleText().Add("Button", stringBuilder).Value;
+            */
+
+            string insertContent = $"<Setter Property=\"Background\" Value=\"Yellow\" />";
+            string styleText = new StyleText().Add("Button", insertContent).Value;
             Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
             this.BtnGetValueTxt.Style = buttonStyle;
 
