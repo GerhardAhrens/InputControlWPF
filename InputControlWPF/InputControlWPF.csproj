@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
-    <Folder Include="Resources\Style\" />
     <Folder Include="Themes\" />
   </ItemGroup>
 

@@ -29,11 +29,16 @@ namespace InputControlWPF.NativCore
     using System.Windows.Markup;
     using System.Xml;
 
-    public sealed class XAMLBuilder<T>
+    public sealed class XAMLBuilder<TResult>
     {
-        public static T GetStyle(string content)
+        public static TResult GetString(string content)
         {
-            return (T)LoadXaml<T>(content);
+            return (TResult)LoadXaml<TResult>(content);
+        }
+
+        public static TResult GetStyle(string content)
+        {
+            return (TResult)LoadXaml<TResult>(content);
         }
 
         private static T LoadXaml<T>(string xamlString)
@@ -92,6 +97,45 @@ namespace InputControlWPF.NativCore
             text.AppendLine($"TargetType=\"{tagetType}\">").Append(" ");
             text.Insert(text.Length - 1, content);
             text.AppendLine("</Style>");
+            return this;
+        }
+    }
+
+    public sealed class GeometryText
+    {
+        private StringBuilder text = null;
+
+        public GeometryText()
+        {
+            this.text = new StringBuilder();
+        }
+
+        public string Value
+        {
+            get
+            {
+                return this.text.ToString();
+            }
+        }
+
+
+        public GeometryText Add(StringBuilder content)
+        {
+            text.AppendLine("<ResourceDictionary").Append(" ");
+            text.AppendLine($"xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"").Append(" ");
+            text.AppendLine($"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">").Append(" ");
+            text.Insert(text.Length - 1, content);
+            text.AppendLine("</ResourceDictionary>");
+            return this;
+        }
+
+        public GeometryText Add(string content)
+        {
+            text.AppendLine("<ResourceDictionary").Append(" ");
+            text.AppendLine($"xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"").Append(" ");
+            text.AppendLine($"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">").Append(" ");
+            text.Insert(text.Length - 1, content);
+            text.AppendLine("</ResourceDictionary>");
             return this;
         }
     }
