@@ -7,9 +7,7 @@ namespace InputControlWPF
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using System.Text;
     using System.Windows;
-    using System.Windows.Media;
 
     using InputControlWPF.Core;
     using InputControlWPF.NativCore;
@@ -33,16 +31,10 @@ namespace InputControlWPF
             stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
             */
 
-            /*
             string insertContent = $"<Setter Property=\"Background\" Value=\"Yellow\" />";
             string styleText = new StyleText().Add("Button", insertContent).Value;
             Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
             this.BtnGetValueTxt.Style = buttonStyle;
-            */
-
-            string insertContent = $"<Geometry x:Key=\"DownArrow\">M 0,0 L 3.5,4 L 7,0 Z</Geometry>";
-            string styleText = new GeometryText().Add(insertContent).Value;
-            Geometry geometry = XAMLBuilder<Geometry>.GetString(styleText);
 
             this.DataContext = this;
         }
