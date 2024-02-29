@@ -103,6 +103,13 @@
                             WidthContent="80"
                             Value="{Binding Path=ValueIntUpDown.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="Datum dd.MM.yyyy"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightBlue">
+                        <inputControl:DatePickerEx Width="140" TabIndex="16" />
+                    </inputControl:ContentFrame>
                 </inputControl:ContentElements>
 
                 <Button
