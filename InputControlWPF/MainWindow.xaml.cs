@@ -23,6 +23,7 @@
             this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year-5, 30).Select(x => (x - 1) + 1); 
             this.ValueIntUpDown.Value = 1;
             this.ValueStringUpDown.Value = "Bär";
+            this.ValueDate.Value = DateTime.Now;
 
             /*
             StringBuilder stringBuilder = new StringBuilder();
@@ -104,6 +105,7 @@
         public XamlProperty<IEnumerable<int>> ValueSourceYears { get; set; } = XamlProperty.Set<IEnumerable<int>>();
         public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
+        public XamlProperty<DateTime?> ValueDate { get; set; } = XamlProperty.Set<DateTime?>();
 
         private string _ValueText;
         public string ValueText
@@ -141,8 +143,9 @@
             string valueMath = this.ValueMath.Value;
             string valueStringUpDown = this.ValueStringUpDown.Value;
             int valueIntUpDown = this.ValueIntUpDown.Value;
+            DateTime? valueDate = this.ValueDate.Value;
 
-            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxDecimal={valueDec}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}";
+            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxDecimal={valueDec}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}\n{((DateTime)valueDate).ToShortDateString()}";
 
             MessageBox.Show(msg);
 

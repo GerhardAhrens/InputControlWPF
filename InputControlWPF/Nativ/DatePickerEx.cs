@@ -34,6 +34,7 @@ namespace InputControlWPF.InputControls
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
+    using InputControlWPF.NativCore;
 
     [SupportedOSPlatform("windows")]
     public class DatePickerEx : DatePicker
@@ -60,13 +61,20 @@ namespace InputControlWPF.InputControls
             WeakEventManager<DatePicker, RoutedEventArgs>.AddHandler(this, "CalendarOpened", this.DatePicker_CalendarOpen);
             WeakEventManager<DatePicker, RoutedEventArgs>.AddHandler(this, "CalendarClosed", this.DatePicker_CalendarClosed);
 
+            this.FontSize = ControlBase.FontSize;
+            this.FontFamily = ControlBase.FontFamily;
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.ReadOnlyBackgroundColor = Brushes.LightYellow;
+            this.Background = Brushes.White;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Padding = new Thickness(0);
             this.Margin = new Thickness(2);
-            this.MinHeight = 18;
-            this.Height = 22;
             this.ClipToBounds = false;
+            this.MinHeight = 18;
+            this.Height = 23;
+            this.Width = 100;
+            this.IsReadOnly = false;
+            this.Focusable = true;
 
             /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();

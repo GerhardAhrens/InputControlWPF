@@ -108,7 +108,10 @@
                         Title="Datum dd.MM.yyyy"
                         HorizontalAlignment="Left"
                         ContentFrameColor="LightBlue">
-                        <inputControl:DatePickerEx Width="140" TabIndex="16" />
+                        <inputControl:DatePickerEx
+                            IsReadOnly="False"
+                            SelectedDate="{Binding Path=ValueDate.Value, UpdateSourceTrigger=PropertyChanged}"
+                            TabIndex="16" />
                     </inputControl:ContentFrame>
                 </inputControl:ContentElements>
 
