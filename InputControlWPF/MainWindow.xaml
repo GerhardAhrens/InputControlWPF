@@ -110,6 +110,7 @@
                         ContentFrameColor="LightBlue">
                         <inputControl:DatePickerEx
                             IsReadOnly="False"
+                            ShowTodayButton ="True"
                             SelectedDate="{Binding Path=ValueDate.Value, UpdateSourceTrigger=PropertyChanged}"
                             TabIndex="16" />
                     </inputControl:ContentFrame>

@@ -31,6 +31,7 @@ namespace InputControlWPF.InputControls
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
@@ -44,6 +45,8 @@ namespace InputControlWPF.InputControls
         public static readonly DependencyProperty WatermarkDefaultDateProperty = DependencyProperty.Register("WatermarkDefaultDate", typeof(string), typeof(DatePickerEx), new PropertyMetadata(WaterMarkDefalutDate));
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(DatePickerEx), new PropertyMetadata(false, OnIsReadOnly));
         public static readonly DependencyProperty ReadOnlyBackgroundColorProperty = DependencyProperty.Register("ReadOnlyBackgroundColor", typeof(Brush), typeof(DatePickerEx), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(222, 222, 222))));
+        public static readonly DependencyProperty ShowTodayButtonProperty = DependencyProperty.RegisterAttached("ShowTodayButton", typeof(bool), typeof(DatePickerEx), new FrameworkPropertyMetadata(false, ShowTodayButtonChanged));
+        public static readonly DependencyProperty ShowTodayButtonContentProperty = DependencyProperty.RegisterAttached("ShowTodayButtonContent", typeof(string), typeof(DatePickerEx), new FrameworkPropertyMetadata("Heute", ShowTodayButtonContentChanged));
 
         private static readonly string[] DateFormats = new string[] { "d.M.yyyy", "dd.MM.yyyy","yyyy.MM", "yyyy.M", "MM.yyyy", "M.yyyy", "yyyy.MM" };
         private static readonly string WaterMarkDefaultText = "dd.MM.yyyy";
@@ -117,9 +120,39 @@ namespace InputControlWPF.InputControls
             set { this.SetValue(ReadOnlyBackgroundColorProperty, value); }
         }
 
+        [AttachedPropertyBrowsableForType(typeof(DatePicker))]
+        public static bool GetShowTodayButton(DependencyObject obj)
+        {
+            return (bool)obj.GetValue(ShowTodayButtonProperty);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(DatePicker))]
+        public static void SetShowTodayButton(DependencyObject obj, bool value)
+        {
+            obj.SetValue(ShowTodayButtonProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(DatePicker))]
+        public static string GetShowTodayButtonContent(Control obj)
+        {
+            return (string)obj.GetValue(ShowTodayButtonContentProperty);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(DatePicker))]
+        public static void SetShowTodayButtonContent(Control obj, string value)
+        {
+            obj.SetValue(ShowTodayButtonContentProperty, value);
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+
+            Button datePickerButton = this.Template.FindName("PART_Button", this) as Button;
+            if (datePickerButton != null)
+            {
+                datePickerButton.Margin = new Thickness(15, 0, 0, 0);
+            }
 
             this._datePickerTextBox = this.Template.FindName("PART_TextBox", this) as DatePickerTextBox;
             if (this._datePickerTextBox != null)
@@ -140,6 +173,105 @@ namespace InputControlWPF.InputControls
         {
             base.OnRender(drawingContext);
             this.SetWatermark();
+        }
+
+        private static void ShowTodayButtonContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            SetShowTodayButton(d, !GetShowTodayButton(d));
+            SetShowTodayButton(d, !GetShowTodayButton(d));
+        }
+
+        private static void ShowTodayButtonChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is DatePicker)
+            {
+                var d = (DatePicker)sender;
+                var showButton = (bool)(e.NewValue);
+
+                if (showButton == true)
+                {
+                    //I want to reproduce this xaml in c#:
+                    //<Style TargetType="{x:Type Calendar}">
+                    //    <Setter Property="Template">
+                    //        <Setter.Value>
+                    //            <ControlTemplate TargetType="{x:Type Calendar}">
+                    //                <StackPanel Name="PART_Root"
+                    //                            HorizontalAlignment="Center">
+                    //                    <CalendarItem Name="PART_CalendarItem"
+                    //                                    Background="{TemplateBinding Control.Background}"
+                    //                                    BorderBrush="{TemplateBinding Control.BorderBrush}"
+                    //                                    BorderThickness="{TemplateBinding Control.BorderThickness}"
+                    //                                    Style="{TemplateBinding Calendar.CalendarItemStyle}" />
+                    //                    <Button Command="SelectToday"
+                    //                            Content="Today" />
+                    //                </StackPanel>
+                    //            </ControlTemplate>
+                    //        </Setter.Value>
+                    //    </Setter>
+                    //</Style>
+
+                    Setter setter = new Setter();
+                    setter.Property = Calendar.TemplateProperty;
+                    ControlTemplate template = new ControlTemplate(typeof(Calendar));
+                    var stackPanel = new FrameworkElementFactory(typeof(StackPanel));
+                    stackPanel.Name = "PART_Root";
+                    stackPanel.SetValue(StackPanel.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+
+                    var calendar = new FrameworkElementFactory(typeof(CalendarItem));
+                    calendar.Name = "PART_CalendarItem";
+
+                    calendar.SetBinding(CalendarItem.BackgroundProperty,
+                        new Binding(CalendarItem.BackgroundProperty.Name)
+                        {
+                            Path = new PropertyPath(Control.BackgroundProperty),
+                            RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent)
+                        });
+
+                    calendar.SetBinding(CalendarItem.BorderBrushProperty, new Binding(CalendarItem.BorderBrushProperty.Name)
+                    {
+                        Path = new PropertyPath(Control.BorderBrushProperty),
+                        RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent)
+                    });
+
+                    calendar.SetBinding(CalendarItem.BorderThicknessProperty, new Binding(CalendarItem.BorderThicknessProperty.Name)
+                    {
+                        Path = new PropertyPath(Control.BorderThicknessProperty),
+                        RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent)
+                    });
+
+                    calendar.SetBinding(CalendarItem.StyleProperty, new Binding(CalendarItem.StyleProperty.Name)
+                    {
+                        Path = new PropertyPath(Calendar.CalendarItemStyleProperty),
+                        RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent)
+                    });
+
+                    stackPanel.AppendChild(calendar);
+
+                    var btn = new FrameworkElementFactory(typeof(Button));
+                    btn.SetValue(Button.ContentProperty, GetShowTodayButtonContent(d));
+
+                    var SelectToday = new RoutedCommand("Today", typeof(DatePickerEx));
+
+                    d.CommandBindings.Add(new CommandBinding(SelectToday,
+              (s, ea) =>
+              {
+                  (s as DatePicker).SelectedDate = DateTime.Now.Date;
+                  (s as DatePicker).IsDropDownOpen = false;
+              },
+              (s, ea) => { ea.CanExecute = true; }));
+
+                    btn.SetValue(Button.CommandProperty, SelectToday);
+
+                    stackPanel.AppendChild(btn);
+
+                    template.VisualTree = stackPanel;
+                    setter.Value = template;
+
+                    Style customStyle = new Style(typeof(Calendar));
+                    customStyle.Setters.Add(setter);
+                    d.CalendarStyle = customStyle;
+                }
+            }
         }
 
         private static Calendar GetDatePickerCalendar(object sender)
@@ -439,23 +571,23 @@ namespace InputControlWPF.InputControls
 
             /* Trigger für IsMouseOver = True */
             Trigger triggerIsMouseOver = new Trigger();
-            triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
+            triggerIsMouseOver.Property = DatePickerTextBox.IsMouseOverProperty;
             triggerIsMouseOver.Value = true;
-            triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            triggerIsMouseOver.Setters.Add(new Setter() { Property = DatePickerTextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsMouseOver);
 
             /* Trigger für IsFocused = True */
             Trigger triggerIsFocused = new Trigger();
-            triggerIsFocused.Property = TextBox.IsFocusedProperty;
+            triggerIsFocused.Property = DatePickerTextBox.IsFocusedProperty;
             triggerIsFocused.Value = true;
-            triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
+            triggerIsFocused.Setters.Add(new Setter() { Property = DatePickerTextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsFocused);
 
             /* Trigger für IsFocused = True */
             Trigger triggerIsReadOnly = new Trigger();
-            triggerIsReadOnly.Property = TextBox.IsReadOnlyProperty;
+            triggerIsReadOnly.Property = DatePickerTextBox.IsReadOnlyProperty;
             triggerIsReadOnly.Value = true;
-            triggerIsReadOnly.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightYellow });
+            triggerIsReadOnly.Setters.Add(new Setter() { Property = DatePickerTextBox.BackgroundProperty, Value = Brushes.LightYellow });
             inputControlStyle.Triggers.Add(triggerIsReadOnly);
 
             return inputControlStyle;
