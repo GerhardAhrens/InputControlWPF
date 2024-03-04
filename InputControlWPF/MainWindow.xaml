@@ -110,8 +110,20 @@
                         ContentFrameColor="LightBlue">
                         <inputControl:DatePickerEx
                             IsReadOnly="False"
-                            ShowTodayButton ="True"
                             SelectedDate="{Binding Path=ValueDate.Value, UpdateSourceTrigger=PropertyChanged}"
+                            ShowTodayButton="True"
+                            TabIndex="16" />
+                    </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="Datum dd.MM.yyyy"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="LightGreen">
+                        <inputControl:ComboBoxEx
+                            Width="100"
+                            IsReadOnly="False"
+                            ItemsSource="{Binding Path=ValueSourceStringsCB.Value}"
+                            SelectedItem="{Binding Path=SelectedItemCB.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             TabIndex="16" />
                     </inputControl:ContentFrame>
                 </inputControl:ContentElements>

@@ -78,9 +78,6 @@ namespace InputControlWPF.InputControls
             this.Width = 100;
             this.IsReadOnly = false;
             this.Focusable = true;
-
-            /* Trigger an Style übergeben */
-            this.Style = this.SetTriggerFunction();
         }
 
         ~DatePickerEx()
@@ -166,6 +163,9 @@ namespace InputControlWPF.InputControls
                 WeakEventManager<DatePickerTextBox, TextCompositionEventArgs>.AddHandler(this._datePickerTextBox, "PreviewTextInput", this.OnPreviewTextInput);
                 this._datePickerTextBox.Background = this.Background;
                 this._datePickerTextBox.MaxLength = this.MaxLength;
+
+                /* Trigger an Style übergeben */
+                this.Style = this.SetTriggerFunction();
             }
         }
 

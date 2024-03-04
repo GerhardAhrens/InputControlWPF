@@ -19,6 +19,7 @@
         {
             this.InitializeComponent();
 
+            this.ValueSourceStringsCB.Value = new List<string> { "Affe", "Bär", "Elefant", "Hund", "Zebra" };
             this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär","Elefant","Hund","Zebra" };
             this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year-5, 30).Select(x => (x - 1) + 1); 
             this.ValueIntUpDown.Value = 1;
@@ -94,6 +95,8 @@
             Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
             this.BtnGetValueTxt.Style = buttonStyle;
 
+            this.SelectedItemCB.Value = this.ValueSourceStrings.Value.FirstOrDefault();
+
             this.DataContext = this;
         }
 
@@ -102,10 +105,12 @@
         public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
+        public XamlProperty<List<string>> ValueSourceStringsCB { get; set; } = XamlProperty.Set<List<string>>();
         public XamlProperty<IEnumerable<int>> ValueSourceYears { get; set; } = XamlProperty.Set<IEnumerable<int>>();
         public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<DateTime?> ValueDate { get; set; } = XamlProperty.Set<DateTime?>();
+        public XamlProperty<string> SelectedItemCB { get; set; } = XamlProperty.Set<string>();
 
         private string _ValueText;
         public string ValueText
@@ -144,8 +149,9 @@
             string valueStringUpDown = this.ValueStringUpDown.Value;
             int valueIntUpDown = this.ValueIntUpDown.Value;
             DateTime? valueDate = this.ValueDate.Value;
+            string selectedItemCB = this.SelectedItemCB.Value;
 
-            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxDecimal={valueDec}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}\n{((DateTime)valueDate).ToShortDateString()}";
+            string msg = $"TextBoxAll={valueTextAll}\nTextBoxInt={valueInt}\nTextBoxDecimal={valueDec}\nTextBoxStringUpDown={valueStringUpDown}\nTextBoxIntegerUpDown={valueIntUpDown}\n{((DateTime)valueDate).ToShortDateString()}\nSelectedItem CM={selectedItemCB}";
 
             MessageBox.Show(msg);
 
