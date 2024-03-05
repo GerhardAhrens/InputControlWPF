@@ -76,6 +76,7 @@ namespace InputControlWPF.InputControls
             this.MinHeight = 18;
             this.Height = 23;
             this.Width = 100;
+            this.IsTodayHighlighted = true;
             this.IsReadOnly = false;
             this.Focusable = true;
         }
