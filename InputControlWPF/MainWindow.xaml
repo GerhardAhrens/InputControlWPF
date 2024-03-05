@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="800"
-    Height="450"
+    Height="550"
     mc:Ignorable="d">
 
     <StackPanel Orientation="Horizontal">
@@ -127,6 +127,14 @@
                             TabIndex="16" />
                     </inputControl:ContentFrame>
                 </inputControl:ContentElements>
+
+                <inputControl:TextBoxMultiline
+                    Width="250"
+                    Height="80"
+                    Lines="5"
+                    HorizontalAlignment="Left"
+                    Text="{Binding Path=ValueTextAll.Value, UpdateSourceTrigger=PropertyChanged}" />
+
 
                 <Button
                     x:Name="BtnGetValueTxt"

@@ -1,21 +1,18 @@
-//-----------------------------------------------------------------------
-// <copyright file="TextBoxAll.cs" company="Lifeprojects.de">
-//     Class: TextBoxAll
-//     Copyright © Lifeprojects.de 2024
+ï»¿//-----------------------------------------------------------------------
+// <copyright file="TextBox.cs" company="Lifeprojects.de">
+//     Class: TextBox
+//     Copyright Â© Gerhard Ahrens, 2018
 // </copyright>
 //
 // <author>Gerhard Ahrens - Lifeprojects.de</author>
-// <email>gerhard.ahrens@lifeprojects.de</email>
-// <date>02.02.2024</date>
+// <email>development@lifeprojects.de</email>
+// <date>27.07.2018</date>
 //
-// <summary>
-// Klasse für 
-// </summary>
+// <summary>Class for UI Control TextBox</summary>
 //-----------------------------------------------------------------------
 
 namespace InputControlWPF.InputControls
 {
-    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -23,28 +20,54 @@ namespace InputControlWPF.InputControls
 
     using InputControlWPF.NativCore;
 
-    public class TextBoxAll : TextBox
+    public sealed class TextBoxMultiline : TextBox
     {
-        public static readonly DependencyProperty ReadOnlyColorProperty = DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxAll), new PropertyMetadata(Brushes.Transparent));
-        public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxAll), new PropertyMetadata(true, OnSetBorderChanged));
+        public static readonly DependencyProperty LinesProperty = 
+            DependencyProperty.Register("Lines",
+                typeof(int),
+                typeof(TextBoxMultiline),
+                new FrameworkPropertyMetadata(2, OnLinesPropertyChanged));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBoxAll"/> class.
-        /// </summary>
-        public TextBoxAll()
+        public static readonly DependencyProperty ReadOnlyColorProperty = DependencyProperty.Register("ReadOnlyColor", typeof(Brush), typeof(TextBoxMultiline), new PropertyMetadata(Brushes.Transparent));
+        public static readonly DependencyProperty SetBorderProperty = DependencyProperty.Register("SetBorder", typeof(bool), typeof(TextBoxMultiline), new PropertyMetadata(true, OnSetBorderChanged));
+
+        public TextBoxMultiline()
         {
             this.FontSize = ControlBase.FontSize;
             this.FontFamily = ControlBase.FontFamily;
-            this.HorizontalContentAlignment = HorizontalAlignment.Left;
-            this.VerticalContentAlignment = VerticalAlignment.Center;
+            this.VerticalContentAlignment = VerticalAlignment.Top;
+            this.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            this.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            this.AcceptsReturn = true;
+            this.TextWrapping = TextWrapping.Wrap;
+            this.Padding = new Thickness(0);
             this.Margin = new Thickness(2);
             this.MinHeight = 18;
             this.Height = 23;
+            this.ClipToBounds = false;
             this.IsReadOnly = false;
             this.Focusable = true;
 
-            /* Trigger an Style übergeben */
-            this.Style = this.SetTriggerFunction();
+            this.AddHandler(PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton), true);
+            this.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText), true);
+        }
+
+        ~TextBoxMultiline()
+        {
+            this.RemoveHandler(PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
+            this.RemoveHandler(MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText));
+        }
+
+        public int Lines
+        {
+            get
+            {
+                return (int)GetValue(LinesProperty);
+            }
+            set
+            {
+                SetValue(LinesProperty, value);
+            }
         }
 
         public bool SetBorder
@@ -59,16 +82,29 @@ namespace InputControlWPF.InputControls
             set { SetValue(ReadOnlyColorProperty, value); }
         }
 
+        private void MoveFocus(FocusNavigationDirection direction)
+        {
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
+
+            if (focusedElement != null)
+            {
+                if (focusedElement is TextBox)
+                {
+                    focusedElement.MoveFocus(new TraversalRequest(direction));
+                }
+            }
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.CaretIndex = this.Text.Length;
             this.SelectAll();
 
-            /* Spezifisches Kontextmenü für Control übergeben */
+            /* Spezifisches KontextmenÃ¼ fÃ¼r Control Ã¼bergeben */
             this.ContextMenu = this.BuildContextMenu();
 
-            /* Rahmen für Control festlegen */
+            /* Rahmen fÃ¼r Control festlegen */
             if (SetBorder == true)
             {
                 this.BorderBrush = Brushes.Green;
@@ -110,47 +146,9 @@ namespace InputControlWPF.InputControls
                         return;
                     case Key.Delete:
                         return;
-                    case Key.Return:
-                        this.MoveFocus(FocusNavigationDirection.Next);
-                        break;
                     case Key.Tab:
                         this.MoveFocus(FocusNavigationDirection.Next);
                         break;
-                }
-            }
-        }
-
-        private void MoveFocus(FocusNavigationDirection direction)
-        {
-            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
-
-            if (focusedElement != null)
-            {
-                if (focusedElement is TextBox)
-                {
-                    focusedElement.MoveFocus(new TraversalRequest(direction));
-                }
-            }
-        }
-
-        private static void OnSetBorderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue != null)
-            {
-                var control = (TextBoxAll)d;
-
-                if (e.NewValue.GetType() == typeof(bool))
-                {
-                    if ((bool)e.NewValue == true)
-                    {
-                        control.BorderBrush = Brushes.Green;
-                        control.BorderThickness = new Thickness(1);
-                    }
-                    else
-                    {
-                        control.BorderBrush = Brushes.Transparent;
-                        control.BorderThickness = new Thickness(0);
-                    }
                 }
             }
         }
@@ -159,21 +157,21 @@ namespace InputControlWPF.InputControls
         {
             Style inputControlStyle = new Style();
 
-            /* Trigger für IsMouseOver = True */
+            /* Trigger fÃ¼r IsMouseOver = True */
             Trigger triggerIsMouseOver = new Trigger();
             triggerIsMouseOver.Property = TextBox.IsMouseOverProperty;
             triggerIsMouseOver.Value = true;
             triggerIsMouseOver.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsMouseOver);
 
-            /* Trigger für IsFocused = True */
+            /* Trigger fÃ¼r IsFocused = True */
             Trigger triggerIsFocused = new Trigger();
             triggerIsFocused.Property = TextBox.IsFocusedProperty;
             triggerIsFocused.Value = true;
             triggerIsFocused.Setters.Add(new Setter() { Property = TextBox.BackgroundProperty, Value = Brushes.LightGray });
             inputControlStyle.Triggers.Add(triggerIsFocused);
 
-            /* Trigger für IsFocused = True */
+            /* Trigger fÃ¼r IsFocused = True */
             Trigger triggerIsReadOnly = new Trigger();
             triggerIsReadOnly.Property = TextBox.IsReadOnlyProperty;
             triggerIsReadOnly.Value = true;
@@ -184,7 +182,7 @@ namespace InputControlWPF.InputControls
         }
 
         /// <summary>
-        /// Spezifisches Kontextmenü erstellen
+        /// Spezifisches KontextmenÃ¼ erstellen
         /// </summary>
         /// <returns></returns>
         private ContextMenu BuildContextMenu()
@@ -199,7 +197,7 @@ namespace InputControlWPF.InputControls
             if (this.IsReadOnly == false)
             {
                 MenuItem pasteMenu = new MenuItem();
-                pasteMenu.Header = "Einfügen";
+                pasteMenu.Header = "EinfÃ¼gen";
                 pasteMenu.Icon = Icons.GetPathGeometry(Icons.IconPaste);
                 WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
                 textBoxContextMenu.Items.Add(pasteMenu);
@@ -239,6 +237,62 @@ namespace InputControlWPF.InputControls
         private void OnSetDateMenu(object sender, RoutedEventArgs e)
         {
             this.Text = DateTime.Now.ToShortDateString();
+        }
+
+        private static void OnSetBorderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                var control = (TextBoxAll)d;
+
+                if (e.NewValue.GetType() == typeof(bool))
+                {
+                    if ((bool)e.NewValue == true)
+                    {
+                        control.BorderBrush = Brushes.Green;
+                        control.BorderThickness = new Thickness(1);
+                    }
+                    else
+                    {
+                        control.BorderBrush = Brushes.Transparent;
+                        control.BorderThickness = new Thickness(0);
+                    }
+                }
+            }
+        }
+
+        private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject parent = e.OriginalSource as UIElement;
+            while (parent != null && !(parent is TextBox))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            if (parent != null)
+            {
+                var textBox = (TextBox)parent;
+                if (textBox.IsKeyboardFocusWithin == false)
+                {
+                    textBox.Focus();
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private static void SelectAllText(object sender, RoutedEventArgs e)
+        {
+            var textBox = e.OriginalSource as TextBox;
+            if (textBox != null)
+            {
+                textBox.SelectAll();
+            }
+        }
+
+        private static void OnLinesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            TextBoxMultiline multilineTextBox = (TextBoxMultiline)d;
+            multilineTextBox.MaxLines = (int)e.NewValue;
         }
     }
 }
