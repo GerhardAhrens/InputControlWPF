@@ -23,6 +23,11 @@ namespace InputControlWPF.InputControls
     {
         public static readonly DependencyProperty ReadOnlyBackgroundColorProperty = DependencyProperty.Register("ReadOnlyBackgroundColor", typeof(Brush), typeof(CheckBoxEx), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(222, 222, 222))));
 
+        static CheckBoxEx()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBoxEx), new FrameworkPropertyMetadata(typeof(CheckBoxEx)));
+        }
+
         public CheckBoxEx()
         {
             string styleTextChk = new StyleText().Add("CheckBox", this.CheckBoxFlatCoreStyle()).Value;
@@ -55,7 +60,6 @@ namespace InputControlWPF.InputControls
                 "     <Setter Property=\"OverridesDefaultStyle\" Value=\"true\" />\r\n        " +
                 "     <Setter Property=\"Background\" Value=\"WhiteSmoke\" />\r\n        " +
                 "     <Setter Property=\"Height\" Value=\"25\" />\r\n        " +
-                "     <Setter Property=\"FocusVisualStyle\" Value=\"{DynamicResource CheckBoxFlatFocusVisualStyte}\" />\r\n" +
                 "     <Setter Property=\"Template\">\r\n" +
                 "     <Setter.Value>\r\n" +
                 "           <ControlTemplate TargetType=\"{x:Type CheckBox}\">\r\n" +

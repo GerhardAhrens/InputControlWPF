@@ -453,6 +453,20 @@ namespace InputControlWPF.InputControls
                             this._calendar.DisplayMode = CalendarMode.Decade;
                         }
                     }
+
+                    if (e.Key == Key.H && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        DatePickerEx elementUI = sender as DatePickerEx;
+                        Popup codePopup = new Popup();
+
+                        TextBlock popupText = new TextBlock();
+                        popupText.Text = "Popup Text";
+                        popupText.Background = Brushes.LightBlue;
+                        popupText.Foreground = Brushes.Blue;
+                        codePopup.Child = popupText;
+                        codePopup.PlacementTarget = elementUI;
+                        codePopup.IsOpen = true;
+                    }
                 }
                 else
                 {

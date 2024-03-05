@@ -78,6 +78,8 @@ namespace InputControlWPF.NativCore
             text.AppendLine("<Style").Append(" ");
             text.AppendLine($"xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"").Append(" ");
             text.AppendLine($"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"").Append(" ");
+            text.AppendLine($"xmlns:PresentationOptions=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation/options\"").Append(" ");
+            text.AppendLine($"xmlns:sys=\"clr-namespace:System;assembly=mscorlib\"").Append(" ");
             text.AppendLine($"TargetType=\"{tagetType}\">").Append(" ");
             text.Insert(text.Length - 1, content);
             text.AppendLine("</Style>");
@@ -89,6 +91,8 @@ namespace InputControlWPF.NativCore
             text.AppendLine("<Style").Append(" ");
             text.AppendLine($"xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"").Append(" ");
             text.AppendLine($"xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"").Append(" ");
+            text.AppendLine($"xmlns:PresentationOptions=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation/options\"").Append(" ");
+            text.AppendLine($"xmlns:sys=\"clr-namespace:System;assembly=mscorlib\"").Append(" ");
             text.AppendLine($"TargetType=\"{tagetType}\">").Append(" ");
             text.Insert(text.Length - 1, content);
             text.AppendLine("</Style>");

@@ -115,6 +115,9 @@ namespace InputControlWPF.InputControls
                 this.BorderBrush = Brushes.Transparent;
                 this.BorderThickness = new Thickness(0);
             }
+
+            /* Trigger an Style übergeben */
+            this.Style = this.SetTriggerFunction();
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
