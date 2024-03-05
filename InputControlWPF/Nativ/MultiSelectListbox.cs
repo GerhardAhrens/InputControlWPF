@@ -228,7 +228,7 @@ namespace InputControlWPF.InputControls
             ContextMenu textBoxContextMenu = new ContextMenu();
 
             MenuItem copyMenu = new MenuItem();
-            copyMenu.Header = "Kopieren";
+            copyMenu.Header = "Alle Kopieren";
             copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopy);
             textBoxContextMenu.Items.Add(copyMenu);
@@ -238,6 +238,12 @@ namespace InputControlWPF.InputControls
             allCheckMenu.Icon = Icons.GetPathGeometry(Icons.IconCheckAll);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(allCheckMenu, "Click", this.OnCheckAll);
             textBoxContextMenu.Items.Add(allCheckMenu);
+
+            MenuItem copyCheckMenu = new MenuItem();
+            copyCheckMenu.Header = "Markierte Kopieren";
+            copyCheckMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyCheckMenu, "Click", this.OnCheckCopy);
+            textBoxContextMenu.Items.Add(copyCheckMenu);
 
             MenuItem unCheckMenu = new MenuItem();
             unCheckMenu.Header = "Keine markieren";
@@ -274,6 +280,25 @@ namespace InputControlWPF.InputControls
                     FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked = true;
                 }
             }
+        }
+
+        private void OnCheckCopy(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (object item in self.ItemsSource)
+            {
+                ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                if (lbi != null)
+                {
+                    if (FindChildrenOfType<CheckBox>(lbi as DependencyObject).First().IsChecked == true)
+                    {
+                        sb.Append(lbi.Content.ToString()).Append(";");
+                    }
+                }
+            }
+
+            Clipboard.SetText(sb.ToString());
         }
 
         private void OnUnCheck(object sender, RoutedEventArgs e)
