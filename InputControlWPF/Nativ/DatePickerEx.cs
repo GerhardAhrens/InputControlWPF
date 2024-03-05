@@ -67,9 +67,9 @@ namespace InputControlWPF.InputControls
             this.FontSize = ControlBase.FontSize;
             this.FontFamily = ControlBase.FontFamily;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
-            this.ReadOnlyBackgroundColor = Brushes.LightYellow;
-            this.Background = Brushes.White;
             this.VerticalContentAlignment = VerticalAlignment.Center;
+            this.Background = Brushes.White;
+            this.BorderBrush = Brushes.Green;
             this.Padding = new Thickness(0);
             this.Margin = new Thickness(2);
             this.ClipToBounds = false;
@@ -79,6 +79,7 @@ namespace InputControlWPF.InputControls
             this.IsTodayHighlighted = true;
             this.IsReadOnly = false;
             this.Focusable = true;
+            this.ReadOnlyBackgroundColor = Brushes.LightYellow;
         }
 
         ~DatePickerEx()
@@ -170,6 +171,9 @@ namespace InputControlWPF.InputControls
                 /* Trigger an Style übergeben */
                 this.Style = this.SetTriggerFunction();
             }
+
+            /* Spezifisches Kontextmenü für Control übergeben */
+            this._datePickerTextBox.ContextMenu = this.BuildContextMenu();
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -652,6 +656,54 @@ namespace InputControlWPF.InputControls
             inputControlStyle.Triggers.Add(triggerIsReadOnly);
 
             return inputControlStyle;
+        }
+
+        /// <summary>
+        /// Spezifisches Kontextmenü erstellen
+        /// </summary>
+        /// <returns></returns>
+        private ContextMenu BuildContextMenu()
+        {
+            ContextMenu textBoxContextMenu = new ContextMenu();
+            MenuItem copyMenu = new MenuItem();
+            copyMenu.Header = "Kopiere";
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
+            textBoxContextMenu.Items.Add(copyMenu);
+
+            if (this.IsReadOnly == false)
+            {
+                MenuItem pasteMenu = new MenuItem();
+                pasteMenu.Header = "Einfügen";
+                pasteMenu.Icon = Icons.GetPathGeometry(Icons.IconPaste);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
+                textBoxContextMenu.Items.Add(pasteMenu);
+
+                MenuItem deleteMenu = new MenuItem();
+                deleteMenu.Header = "Ausschneiden";
+                deleteMenu.Icon = Icons.GetPathGeometry(Icons.IconDelete);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
+                textBoxContextMenu.Items.Add(deleteMenu);
+            }
+
+            return textBoxContextMenu;
+        }
+
+        private void OnCopyMenu(object sender, RoutedEventArgs e)
+        {
+            this._datePickerTextBox.SelectAll();
+            Clipboard.SetText(this._datePickerTextBox.Text);
+        }
+
+        private void OnPasteMenu(object sender, RoutedEventArgs e)
+        {
+            this._datePickerTextBox.Text = Clipboard.GetText();
+        }
+
+        private void OnDeleteMenu(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this._datePickerTextBox.Text);
+            this._datePickerTextBox.Text = string.Empty;
         }
     }
 }

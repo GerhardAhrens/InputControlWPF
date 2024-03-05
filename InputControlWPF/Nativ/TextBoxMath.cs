@@ -41,8 +41,8 @@ namespace InputControlWPF.InputControls
         /// </summary>
         public TextBoxMath()
         {
-            this.FontSize = 12.0;
-            this.FontFamily = new FontFamily("Arial");
+            this.FontSize = ControlBase.FontSize;
+            this.FontFamily = ControlBase.FontFamily;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Margin = new Thickness(2);
@@ -214,7 +214,7 @@ namespace InputControlWPF.InputControls
         {
             ContextMenu textBoxContextMenu = new ContextMenu();
             MenuItem copyMenu = new MenuItem();
-            copyMenu.Header = "Kopiere Inhalt";
+            copyMenu.Header = "Kopiere";
             copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);
@@ -222,13 +222,13 @@ namespace InputControlWPF.InputControls
             if (this.IsReadOnly == false)
             {
                 MenuItem pasteMenu = new MenuItem();
-                pasteMenu.Header = "Einfügen Inhalt";
+                pasteMenu.Header = "Einfügen";
                 pasteMenu.Icon = Icons.GetPathGeometry(Icons.IconPaste);
                 WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
                 textBoxContextMenu.Items.Add(pasteMenu);
 
                 MenuItem deleteMenu = new MenuItem();
-                deleteMenu.Header = "Lösche Inhalt";
+                deleteMenu.Header = "Ausschneiden";
                 deleteMenu.Icon = Icons.GetPathGeometry(Icons.IconDelete);
                 WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
                 textBoxContextMenu.Items.Add(deleteMenu);
@@ -249,12 +249,8 @@ namespace InputControlWPF.InputControls
 
         private void OnDeleteMenu(object sender, RoutedEventArgs e)
         {
+            Clipboard.SetText(this.Text);
             this.Text = string.Empty;
-        }
-
-        private void OnSetDateMenu(object sender, RoutedEventArgs e)
-        {
-            this.Text = DateTime.Now.ToShortDateString();
         }
 
         #region Math

@@ -37,8 +37,8 @@ namespace InputControlWPF.InputControls
         /// </summary>
         public TextBoxReadOnly()
         {
-            this.FontSize = 12.0;
-            this.FontFamily = new FontFamily("Arial");
+            this.FontSize = ControlBase.FontSize;
+            this.FontFamily = ControlBase.FontFamily;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Margin = new Thickness(2);
@@ -47,6 +47,7 @@ namespace InputControlWPF.InputControls
             this.FontSize = 14;
             this.IsReadOnly = true;
             this.Focusable = true;
+
             /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();
         }
@@ -182,7 +183,7 @@ namespace InputControlWPF.InputControls
         {
             ContextMenu textBoxContextMenu = new ContextMenu();
             MenuItem copyMenu = new MenuItem();
-            copyMenu.Header = "Kopiere Inhalt";
+            copyMenu.Header = "Kopiere";
             copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
             WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
             textBoxContextMenu.Items.Add(copyMenu);

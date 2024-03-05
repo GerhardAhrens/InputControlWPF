@@ -21,6 +21,7 @@ namespace InputControlWPF.InputControls
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
+    using InputControlWPF.NativCore;
 
     [SupportedOSPlatform("windows")]
     public class ComboBoxEx : ComboBox
@@ -40,10 +41,20 @@ namespace InputControlWPF.InputControls
         /// </summary>
         public ComboBoxEx() : base()
         {
-            this.ApplyFontSize();
-            this.ApplyBorderBrush();
-            this.ApplyReadOnlyBackgroundColor();
+            this.FontSize = ControlBase.FontSize;
+            this.FontFamily = ControlBase.FontFamily;
+            this.BorderBrush = Brushes.Green;
+            this.HorizontalContentAlignment = HorizontalAlignment.Left;
+            this.VerticalAlignment = VerticalAlignment.Center;
+            this.VerticalContentAlignment = VerticalAlignment.Center;
+            this.Padding = new Thickness(0);
+            this.Margin = new Thickness(2);
+            this.MinHeight = 18;
+            this.Height = 23;
+            this.ClipToBounds = false;
+            this.Focusable = true;
 
+            this.ReadOnlyBackgroundColor = Brushes.LightYellow;
             this.IsNumeric = false;
             this.IsReadOnly = false;
             this.IsEditable = true;
@@ -94,6 +105,9 @@ namespace InputControlWPF.InputControls
 
             /* Trigger an Style übergeben */
             this.Style = this.SetTriggerFunction();
+
+            /* Spezifisches Kontextmenü für Control übergeben */
+            this._comboBoxTextBox.ContextMenu = this.BuildContextMenu();
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -241,6 +255,53 @@ namespace InputControlWPF.InputControls
             inputControlStyle.Triggers.Add(triggerIsReadOnly);
 
             return inputControlStyle;
+        }
+
+        /// <summary>
+        /// Spezifisches Kontextmenü erstellen
+        /// </summary>
+        /// <returns></returns>
+        private ContextMenu BuildContextMenu()
+        {
+            ContextMenu textBoxContextMenu = new ContextMenu();
+            MenuItem copyMenu = new MenuItem();
+            copyMenu.Header = "Kopiere";
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopyMenu);
+            textBoxContextMenu.Items.Add(copyMenu);
+
+            if (this.IsReadOnly == false)
+            {
+                MenuItem pasteMenu = new MenuItem();
+                pasteMenu.Header = "Einfügen";
+                pasteMenu.Icon = Icons.GetPathGeometry(Icons.IconPaste);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(pasteMenu, "Click", this.OnPasteMenu);
+                textBoxContextMenu.Items.Add(pasteMenu);
+
+                MenuItem deleteMenu = new MenuItem();
+                deleteMenu.Header = "Ausschneiden";
+                deleteMenu.Icon = Icons.GetPathGeometry(Icons.IconDelete);
+                WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(deleteMenu, "Click", this.OnDeleteMenu);
+                textBoxContextMenu.Items.Add(deleteMenu);
+            }
+
+            return textBoxContextMenu;
+        }
+
+        private void OnCopyMenu(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.Text);
+        }
+
+        private void OnPasteMenu(object sender, RoutedEventArgs e)
+        {
+            this.Text = Clipboard.GetText();
+        }
+
+        private void OnDeleteMenu(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.Text);
+            this.Text = string.Empty;
         }
     }
 }
