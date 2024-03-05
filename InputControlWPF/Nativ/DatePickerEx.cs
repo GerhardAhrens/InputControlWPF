@@ -148,7 +148,8 @@ namespace InputControlWPF.InputControls
             Button datePickerButton = this.Template.FindName("PART_Button", this) as Button;
             if (datePickerButton != null)
             {
-                datePickerButton.Margin = new Thickness(15, 0, 0, 0);
+                datePickerButton.Margin = new Thickness(12, 0, 0, 0);
+                datePickerButton.HorizontalAlignment = HorizontalAlignment.Right;
             }
 
             this._datePickerTextBox = this.Template.FindName("PART_TextBox", this) as DatePickerTextBox;
@@ -157,6 +158,7 @@ namespace InputControlWPF.InputControls
                 if (this.SelectedDate == null)
                 {
                     this._datePickerTextBox.Text = string.Empty;
+                    this._datePickerTextBox.HorizontalAlignment = HorizontalAlignment.Left;
                 }
 
                 WeakEventManager<DatePickerTextBox, TextChangedEventArgs>.AddHandler(this._datePickerTextBox, "TextChanged", this.OnTextChanged);
@@ -178,7 +180,7 @@ namespace InputControlWPF.InputControls
         private static void ShowTodayButtonContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SetShowTodayButton(d, !GetShowTodayButton(d));
-            SetShowTodayButton(d, !GetShowTodayButton(d));
+            //SetShowTodayButton(d, !GetShowTodayButton(d));
         }
 
         private static void ShowTodayButtonChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -250,17 +252,17 @@ namespace InputControlWPF.InputControls
                     var btn = new FrameworkElementFactory(typeof(Button));
                     btn.SetValue(Button.ContentProperty, GetShowTodayButtonContent(d));
 
-                    var SelectToday = new RoutedCommand("Today", typeof(DatePickerEx));
+                    var selectToday = new RoutedCommand("Today", typeof(DatePickerEx));
 
-                    d.CommandBindings.Add(new CommandBinding(SelectToday,
-              (s, ea) =>
-              {
-                  (s as DatePicker).SelectedDate = DateTime.Now.Date;
-                  (s as DatePicker).IsDropDownOpen = false;
-              },
-              (s, ea) => { ea.CanExecute = true; }));
+                    d.CommandBindings.Add(new CommandBinding(selectToday,
+                      (s, ea) =>
+                      {
+                          (s as DatePicker).SelectedDate = DateTime.Now.Date;
+                          (s as DatePicker).IsDropDownOpen = false;
+                      },
+                      (s, ea) => { ea.CanExecute = true; }));
 
-                    btn.SetValue(Button.CommandProperty, SelectToday);
+                    btn.SetValue(Button.CommandProperty, selectToday);
 
                     stackPanel.AppendChild(btn);
 
@@ -278,6 +280,7 @@ namespace InputControlWPF.InputControls
         {
             var datePicker = (DatePicker)sender;
             var popup = (Popup)datePicker.Template.FindName("PART_Popup", datePicker);
+
             return (Calendar)popup.Child;
         }
 
@@ -286,7 +289,7 @@ namespace InputControlWPF.InputControls
             this._calendar = GetDatePickerCalendar(sender);
 
             if (this._calendar != null)
-            {
+            {                
                 CalendarItem calItem = (CalendarItem)this._calendar.Template.FindName("PART_CalendarItem", this._calendar);
 
                 if (calItem != null)
@@ -418,6 +421,24 @@ namespace InputControlWPF.InputControls
                             ((DatePicker)sender).SelectedDate = ((DatePicker)sender).SelectedDate.GetValueOrDefault().AddDays(-1);
                         }
                     }
+
+                    if (e.Key == Key.M && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Year;
+                        }
+                    }
+
+                    if (e.Key == Key.Y && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Decade;
+                        }
+                    }
                 }
                 else
                 {
@@ -444,21 +465,42 @@ namespace InputControlWPF.InputControls
                             ((DatePicker)sender).SelectedDate = ((DatePicker)sender).SelectedDate.GetValueOrDefault().AddYears(-1);
                         }
                     }
+
+                    if (e.Key == Key.M && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Year;
+                        }
+                    }
+
+                    if (e.Key == Key.Y && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Decade;
+                        }
+                    }
                 }
             }
         }
 
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            char character = Convert.ToChar(e.Text);
+            if (e.Text.Length  == 1)
+            {
+                char character = Convert.ToChar(e.Text);
 
-            if (char.IsNumber(character) || character == '.' || character == '/')
-            {
-                e.Handled = false;
-            }
-            else
-            {
-                e.Handled = true;
+                if (char.IsNumber(character) || character == '.' || character == '/')
+                {
+                    e.Handled = false;
+                }
+                else
+                {
+                    e.Handled = true;
+                }
             }
         }
 
