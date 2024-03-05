@@ -43,7 +43,7 @@ namespace InputControlWPF.InputControls
         {
             this.FontSize = ControlBase.FontSize;
             this.FontFamily = ControlBase.FontFamily;
-            this.BorderBrush = Brushes.Green;
+            this.BorderBrush = ControlBase.BorderBrush;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalAlignment = VerticalAlignment.Center;
             this.VerticalContentAlignment = VerticalAlignment.Center;

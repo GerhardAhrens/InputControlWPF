@@ -4,6 +4,8 @@
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Xml.Linq;
 
     using InputControlWPF.Core;
     using InputControlWPF.NativCore;
@@ -19,13 +21,53 @@
         {
             this.InitializeComponent();
 
-            this.ValueSourceStringsCB.Value = new List<string> { "Affe", "Bär", "Elefant", "Hund", "Zebra" };
-            this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär","Elefant","Hund","Zebra" };
-            this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year-5, 30).Select(x => (x - 1) + 1); 
-            this.ValueIntUpDown.Value = 1;
-            this.ValueStringUpDown.Value = "Bär";
-            this.ValueDate.Value = DateTime.Now;
+            WeakEventManager<Window, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
+            this.DataContext = this;
+        }
+
+        public XamlProperty<string> ValueTextAll { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<decimal> ValueDecimal { get; set; } = XamlProperty.Set<decimal>();
+        public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
+        public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
+        public XamlProperty<List<string>> ValueSourceStringsCB { get; set; } = XamlProperty.Set<List<string>>();
+        public XamlProperty<IEnumerable<int>> ValueSourceYears { get; set; } = XamlProperty.Set<IEnumerable<int>>();
+        public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
+        public XamlProperty<DateTime?> ValueDate { get; set; } = XamlProperty.Set<DateTime?>();
+        public XamlProperty<string> SelectedItemCB { get; set; } = XamlProperty.Set<string>();
+
+        private string _ValueText;
+        public string ValueText
+        {
+            get { return _ValueText; }
+            set { SetField(ref _ValueText, value); }
+        }
+
+        private List<string> _MultiSelecteds;
+        public List<string> MultiSelecteds
+        {
+            get { return _MultiSelecteds; }
+            set
+            { 
+                SetField(ref _MultiSelecteds, value);
+                SelectedsString = string.Join(",", MultiSelecteds.Select(s => s));
+            }
+        }
+
+        private string _SelectedsString;
+        public string SelectedsString
+        {
+            get { return _SelectedsString; }
+            set
+            {
+                SetField(ref _SelectedsString, value);
+            }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
             /*
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
@@ -91,53 +133,18 @@
             /*
             string insertContent = $"<Setter Property=\"Background\" Value=\"Yellow\" />";
             */
+
             string styleText = new StyleText().Add("Button", stringBuilder).Value;
             Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
             this.BtnGetValueTxt.Style = buttonStyle;
 
+            this.ValueSourceStringsCB.Value = new List<string> { "Affe", "Bär", "Elefant", "Hund", "Zebra" };
+            this.ValueSourceStrings.Value = new List<string> { "Affe", "Bär", "Elefant", "Hund", "Zebra" };
+            this.ValueSourceYears.Value = Enumerable.Range(DateTime.Today.Year - 5, 30).Select(x => (x - 1) + 1);
+            this.ValueIntUpDown.Value = 1;
+            this.ValueStringUpDown.Value = "Bär";
+            this.ValueDate.Value = DateTime.Now;
             this.SelectedItemCB.Value = this.ValueSourceStrings.Value.FirstOrDefault();
-
-            this.DataContext = this;
-        }
-
-        public XamlProperty<string> ValueTextAll { get; set; } = XamlProperty.Set<string>();
-        public XamlProperty<decimal> ValueDecimal { get; set; } = XamlProperty.Set<decimal>();
-        public XamlProperty<int> ValueInt { get; set; } = XamlProperty.Set<int>();
-        public XamlProperty<string> ValueMath { get; set; } = XamlProperty.Set<string>();
-        public XamlProperty<List<string>> ValueSourceStrings { get; set; } = XamlProperty.Set<List<string>>();
-        public XamlProperty<List<string>> ValueSourceStringsCB { get; set; } = XamlProperty.Set<List<string>>();
-        public XamlProperty<IEnumerable<int>> ValueSourceYears { get; set; } = XamlProperty.Set<IEnumerable<int>>();
-        public XamlProperty<string> ValueStringUpDown { get; set; } = XamlProperty.Set<string>();
-        public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
-        public XamlProperty<DateTime?> ValueDate { get; set; } = XamlProperty.Set<DateTime?>();
-        public XamlProperty<string> SelectedItemCB { get; set; } = XamlProperty.Set<string>();
-
-        private string _ValueText;
-        public string ValueText
-        {
-            get { return _ValueText; }
-            set { SetField(ref _ValueText, value); }
-        }
-
-        private List<string> _MultiSelecteds;
-        public List<string> MultiSelecteds
-        {
-            get { return _MultiSelecteds; }
-            set
-            { 
-                SetField(ref _MultiSelecteds, value);
-                SelectedsString = string.Join(",", MultiSelecteds.Select(s => s));
-            }
-        }
-
-        private string _SelectedsString;
-        public string SelectedsString
-        {
-            get { return _SelectedsString; }
-            set
-            {
-                SetField(ref _SelectedsString, value);
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -178,6 +185,13 @@
 
         private void GroupBox2_Click(object sender, RoutedEventArgs e)
         {
+            var element = sender as ContentControl;
+            if (element != null)
+            {
+                var location = element.PointToScreen(new Point(0, 0));
+                MessageBox.Show($"{element.Content}'s location is ({location.X}, {location.Y})");
+            }
+
             string msg = $"{this.SelectedsString}";
             MessageBox.Show(msg);
         }

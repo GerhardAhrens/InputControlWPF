@@ -131,8 +131,8 @@
                 <inputControl:TextBoxMultiline
                     Width="250"
                     Height="80"
-                    Lines="5"
                     HorizontalAlignment="Left"
+                    Lines="5"
                     Text="{Binding Path=ValueTextAll.Value, UpdateSourceTrigger=PropertyChanged}" />
 
 
@@ -172,6 +172,13 @@
                     HorizontalAlignment="Left"
                     Click="GroupBox3_Click"
                     Content="Set Values" />
+
+                <inputControl:CheckBoxEx
+                    x:Name="chkBox"
+                    Content="Test"
+                    FlowDirection="LeftToRight"
+                    IsChecked="True" />
+
             </StackPanel>
         </GroupBox>
     </StackPanel>
