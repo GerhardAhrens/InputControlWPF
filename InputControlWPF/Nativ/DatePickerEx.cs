@@ -422,6 +422,15 @@ namespace InputControlWPF.InputControls
                         }
                     }
 
+                    if (e.Key == Key.D && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Month;
+                        }
+                    }
+
                     if (e.Key == Key.M && Keyboard.IsKeyDown(Key.LeftCtrl))
                     {
                         ((DatePicker)sender).IsDropDownOpen = true;
@@ -463,6 +472,15 @@ namespace InputControlWPF.InputControls
                         else if (Keyboard.IsKeyDown(Key.LeftCtrl))
                         {
                             ((DatePicker)sender).SelectedDate = ((DatePicker)sender).SelectedDate.GetValueOrDefault().AddYears(-1);
+                        }
+                    }
+
+                    if (e.Key == Key.D && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        ((DatePicker)sender).IsDropDownOpen = true;
+                        if (this._calendar != null)
+                        {
+                            this._calendar.DisplayMode = CalendarMode.Month;
                         }
                     }
 
