@@ -20,6 +20,7 @@ namespace InputControlWPF.InputControls
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -226,6 +227,12 @@ namespace InputControlWPF.InputControls
         {
             ContextMenu textBoxContextMenu = new ContextMenu();
 
+            MenuItem copyMenu = new MenuItem();
+            copyMenu.Header = "Kopieren";
+            copyMenu.Icon = Icons.GetPathGeometry(Icons.IconCopy);
+            WeakEventManager<MenuItem, RoutedEventArgs>.AddHandler(copyMenu, "Click", this.OnCopy);
+            textBoxContextMenu.Items.Add(copyMenu);
+
             MenuItem allCheckMenu = new MenuItem();
             allCheckMenu.Header = "Alle markieren";
             allCheckMenu.Icon = Icons.GetPathGeometry(Icons.IconCheckAll);
@@ -239,6 +246,22 @@ namespace InputControlWPF.InputControls
             textBoxContextMenu.Items.Add(unCheckMenu);
 
             return textBoxContextMenu;
+        }
+
+        private void OnCopy(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (object item in self.ItemsSource)
+            {
+                ListBoxItem lbi = self.ItemContainerGenerator.ContainerFromItem(item) as ListBoxItem;
+                if (lbi != null)
+                {
+                    sb.Append(lbi.Content.ToString()).Append(";");
+                }
+            }
+
+            Clipboard.SetText(sb.ToString());
         }
 
         private void OnCheckAll(object sender, RoutedEventArgs e)

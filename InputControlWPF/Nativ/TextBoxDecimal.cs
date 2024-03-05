@@ -382,10 +382,5 @@
             Clipboard.SetText(this.Text);
             this.Text = string.Empty;
         }
-
-        private void OnSetDateMenu(object sender, RoutedEventArgs e)
-        {
-            this.Text = DateTime.Now.ToShortDateString();
-        }
     }
 }

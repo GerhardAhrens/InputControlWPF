@@ -116,7 +116,7 @@
                     </inputControl:ContentFrame>
 
                     <inputControl:ContentFrame
-                        Title="Datum dd.MM.yyyy"
+                        Title="ComboBox"
                         HorizontalAlignment="Left"
                         ContentFrameColor="LightGreen">
                         <inputControl:ComboBoxEx
