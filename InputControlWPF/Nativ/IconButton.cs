@@ -28,9 +28,6 @@ namespace InputControlWPF.InputControls
 
         public IconButton()
         {
-            string styleTextButton = new StyleText().Add("Button", this.ButtonFlatCoreStyle()).Value;
-            //Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleTextButton);
-            //this.Style = buttonStyle;
         }
 
         #region PathData
@@ -101,64 +98,5 @@ namespace InputControlWPF.InputControls
         }
 
         #endregion
-
-        private string ButtonFlatCoreStyle()
-        {
-            string result = string.Empty;
-
-            result = "<Setter Property=\"Orientation\" Value=\"Horizontal\" />\r\n" +
-                     "<Setter Property=\"Height\" Value=\"24\" />\r\n" +
-                     "<Setter Property=\"Background\" Value=\"Transparent\" />\r\n" +
-                     "<Setter Property=\"BorderThickness\" Value=\"0\" />\r\n" +
-                     "<Setter Property=\"Cursor\" Value=\"Hand\" />\r\n" +
-                     "<Setter Property=\"Template\">\r\n" +
-                     "<Setter.Value>\r\n" +
-                     "           <ControlTemplate TargetType=\"{x:Type Button}\">\r\n" +
-                     "                    <Border\r\n" +
-                     "                        Background=\"{TemplateBinding Property=Background}\"\r\n" +
-                     "                        BorderBrush=\"{TemplateBinding Property=BorderBrush}\"\r\n" +
-                     "                        BorderThickness=\"{TemplateBinding Property=BorderThickness}\">\r\n" +
-                     "                        <Viewbox Stretch=\"Uniform\">\r\n" +
-                     "                        <StackPanel\r\n" +
-                     "                                Height=\"{TemplateBinding Property=Height}\"\r\n" +
-                     "                                HorizontalAlignment=\"Center\"\r\n" +
-                     "                                VerticalAlignment=\"Center\"\r\n" +
-                     "                                Background=\"{TemplateBinding Property=Background}\"\r\n" +
-                     "                                Orientation=\"{TemplateBinding Property=Orientation}\">\r\n" +
-                     "                                <Viewbox\r\n" +
-                     "                                    Margin=\"2,5\"\r\n" +
-                     "                                    HorizontalAlignment=\"Left\"\r\n" +
-                     "                                    VerticalAlignment=\"Bottom\"\r\n" +
-                     "                                    Stretch=\"Uniform\"\r\n" +
-                     "                                    Visibility=\"{TemplateBinding Property=IconVisibility}\">\r\n" +
-                     "                                    <Path\r\n" +
-                     "                                        Data=\"{TemplateBinding Property=PathData}\"\r\n" +
-                     "                                        Fill=\"{TemplateBinding Property=Foreground}\"\r\n" +
-                     "                                        Stretch=\"Uniform\" />\r\n" +
-                     "                                </Viewbox>\r\n\r\n" +
-                     "                                <ContentControl\r\n" +
-                     "                                    Margin=\"2\"\r\n" +
-                     "                                    HorizontalAlignment=\"Center\"\r\n" +
-                     "                                    VerticalAlignment=\"Bottom\"\r\n" +
-                     "                                    Content=\"{TemplateBinding Property=Text}\"\r\n" +
-                     "                                    Visibility=\"{TemplateBinding Property=TextVisibility}\" />\r\n" +
-                     "                            </StackPanel>\r\n" +
-                     "                        </Viewbox>\r\n" +
-                     "                    </Border>\r\n" +
-                     "                </ControlTemplate>\r\n" +
-                     "            </Setter.Value>\r\n" +
-                     "        </Setter>\r\n" +
-                     "        <Style.Triggers>\r\n" +
-                     "            <Trigger Property=\"IsMouseOver\" Value=\"True\">\r\n" +
-                     "                <Setter Property=\"BorderBrush\" Value=\"Transparent\" />\r\n" +
-                     "                <Setter Property=\"Opacity\" Value=\"0.5\" />\r\n" +
-                     "            </Trigger>\r\n" +
-                     "            <Trigger Property=\"IsMouseOver\" Value=\"False\">\r\n" +
-                     "                <Setter Property=\"BorderBrush\" Value=\"Transparent\" />\r\n" +
-                     "            </Trigger>\r\n" +
-                     "</Style.Triggers>";
-
-            return result;
-        }
     }
 }

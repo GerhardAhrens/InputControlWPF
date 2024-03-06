@@ -3,6 +3,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/InputControlWPF;component/UIElement/ContentFrameStyle.xaml" />
         <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/MenuItemStyle.xaml" />
-        <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/ButtonStyle.xaml" />
+        <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/IconButtonStyle.xaml" />
+        <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/UpDownButtonStyle.xaml" />
+        <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/GeometryIcon.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

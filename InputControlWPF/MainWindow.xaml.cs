@@ -68,73 +68,7 @@
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            /*
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
-            */
-
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>");
-            stringBuilder.AppendLine("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>");
-            stringBuilder.AppendLine("<Setter Property=\"Padding\" Value=\"1\"/>");
-            stringBuilder.AppendLine("<Setter Property=\"Template\">");
-            stringBuilder.AppendLine("<Setter.Value>");
-            stringBuilder.AppendLine("<ControlTemplate TargetType=\"{x:Type Button}\">");
-            stringBuilder.AppendLine("<Grid x:Name=\"grid\">");
-            stringBuilder.AppendLine("<Border x:Name=\"border\" CornerRadius=\"8\" BorderBrush=\"Black\" BorderThickness=\"2\">");
-            stringBuilder.AppendLine("<Border.Background>");
-            stringBuilder.AppendLine("<RadialGradientBrush GradientOrigin=\"0.496,1.052\">");
-            stringBuilder.AppendLine("<RadialGradientBrush.RelativeTransform>");
-            stringBuilder.AppendLine("<TransformGroup>");
-            stringBuilder.AppendLine("<ScaleTransform CenterX=\"0.5\" CenterY=\"0.5\" \r\nScaleX=\"1.5\" ScaleY=\"1.5\"/>");
-            stringBuilder.AppendLine("<TranslateTransform X=\"0.02\" Y=\"0.3\"/>");
-            stringBuilder.AppendLine("</TransformGroup>");
-            stringBuilder.AppendLine("</RadialGradientBrush.RelativeTransform>");
-            stringBuilder.AppendLine("<GradientStop Offset=\"1\" Color=\"#00000000\"/>");
-            stringBuilder.AppendLine("<GradientStop Offset=\"0.3\" Color=\"#FFFFFFFF\"/>");
-            stringBuilder.AppendLine("</RadialGradientBrush>");
-            stringBuilder.AppendLine("</Border.Background>");
-            stringBuilder.AppendLine("<ContentPresenter HorizontalAlignment=\"Center\"\r\nVerticalAlignment=\"Center\"\r\nTextElement.FontWeight=\"Bold\">");
-            stringBuilder.AppendLine("</ContentPresenter>");
-            stringBuilder.AppendLine("</Border>");
-            stringBuilder.AppendLine("</Grid>");
-            stringBuilder.AppendLine("<ControlTemplate.Triggers>");
-            stringBuilder.AppendLine("<Trigger Property=\"IsPressed\" Value=\"True\">");
-            stringBuilder.AppendLine("<Setter Property=\"Background\" TargetName=\"border\">");
-            stringBuilder.AppendLine("<Setter.Value>");
-            stringBuilder.AppendLine("<RadialGradientBrush GradientOrigin=\"0.496,1.052\">");
-            stringBuilder.AppendLine("<RadialGradientBrush.RelativeTransform>");
-            stringBuilder.AppendLine("<TransformGroup>");
-            stringBuilder.AppendLine("<ScaleTransform CenterX=\"0.5\" CenterY=\"0.5\" ScaleX=\"1.5\" ScaleY=\"1.5\"/>");
-            stringBuilder.AppendLine("<TranslateTransform X=\"0.02\" Y=\"0.3\"/>");
-            stringBuilder.AppendLine("</TransformGroup>");
-            stringBuilder.AppendLine("</RadialGradientBrush.RelativeTransform>");
-            stringBuilder.AppendLine(" <GradientStop Color=\"#00000000\" Offset=\"1\"/>");
-            stringBuilder.AppendLine("<GradientStop Color=\"#FF303030\" Offset=\"0.3\"/>");
-            stringBuilder.AppendLine("</RadialGradientBrush>");
-            stringBuilder.AppendLine("</Setter.Value>");
-            stringBuilder.AppendLine("</Setter>");
-            stringBuilder.AppendLine("</Trigger>");
-            stringBuilder.AppendLine("<Trigger Property=\"IsMouseOver\" Value=\"True\">");
-            stringBuilder.AppendLine("<Setter Property=\"BorderBrush\" TargetName=\"border\" Value=\"#FF33962B\"/>");
-            stringBuilder.AppendLine("</Trigger>");
-            stringBuilder.AppendLine("<Trigger Property=\"IsEnabled\" Value=\"False\">");
-            stringBuilder.AppendLine("<Setter Property=\"Opacity\" TargetName=\"grid\" Value=\"0.25\"/>");
-            stringBuilder.AppendLine("</Trigger>");
-            stringBuilder.AppendLine("</ControlTemplate.Triggers>");
-            stringBuilder.AppendLine("</ControlTemplate>");
-            stringBuilder.AppendLine("</Setter.Value>");
-            stringBuilder.AppendLine("</Setter>");
-
-            /*
-            stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
-            */
-
-            /*
-            string insertContent = $"<Setter Property=\"Background\" Value=\"Yellow\" />";
-            */
-
-            string styleText = new StyleText().Add("Button", stringBuilder).Value;
+            string styleText = new StyleText().Add("Button", ButtonStyle()).Value;
             Style buttonStyle = XAMLBuilder<Style>.GetStyle(styleText);
             this.BtnGetValueTxt.Style = buttonStyle;
 
@@ -199,6 +133,77 @@
         private void GroupBox3_Click(object sender, RoutedEventArgs e)
         {
             this.MultiSelecteds = new List<string> { "Elefant", "Hund" };
+        }
+
+        private StringBuilder ButtonStyle()
+        {
+            /*
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
+            */
+
+            /*
+            stringBuilder.AppendLine($"<Setter Property=\"Background\" Value=\"Yellow\" />").Append(" ");
+            */
+
+            /*
+            string insertContent = $"<Setter Property=\"Background\" Value=\"Yellow\" />";
+            */
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("<Setter Property=\"HorizontalContentAlignment\" Value=\"Center\"/>");
+            stringBuilder.AppendLine("<Setter Property=\"VerticalContentAlignment\" Value=\"Center\"/>");
+            stringBuilder.AppendLine("<Setter Property=\"Padding\" Value=\"1\"/>");
+            stringBuilder.AppendLine("<Setter Property=\"Template\">");
+            stringBuilder.AppendLine("<Setter.Value>");
+            stringBuilder.AppendLine("<ControlTemplate TargetType=\"{x:Type Button}\">");
+            stringBuilder.AppendLine("<Grid x:Name=\"grid\">");
+            stringBuilder.AppendLine("<Border x:Name=\"border\" CornerRadius=\"8\" BorderBrush=\"Black\" BorderThickness=\"2\">");
+            stringBuilder.AppendLine("<Border.Background>");
+            stringBuilder.AppendLine("<RadialGradientBrush GradientOrigin=\"0.496,1.052\">");
+            stringBuilder.AppendLine("<RadialGradientBrush.RelativeTransform>");
+            stringBuilder.AppendLine("<TransformGroup>");
+            stringBuilder.AppendLine("<ScaleTransform CenterX=\"0.5\" CenterY=\"0.5\" \r\nScaleX=\"1.5\" ScaleY=\"1.5\"/>");
+            stringBuilder.AppendLine("<TranslateTransform X=\"0.02\" Y=\"0.3\"/>");
+            stringBuilder.AppendLine("</TransformGroup>");
+            stringBuilder.AppendLine("</RadialGradientBrush.RelativeTransform>");
+            stringBuilder.AppendLine("<GradientStop Offset=\"1\" Color=\"#00000000\"/>");
+            stringBuilder.AppendLine("<GradientStop Offset=\"0.3\" Color=\"#FFFFFFFF\"/>");
+            stringBuilder.AppendLine("</RadialGradientBrush>");
+            stringBuilder.AppendLine("</Border.Background>");
+            stringBuilder.AppendLine("<ContentPresenter HorizontalAlignment=\"Center\"\r\nVerticalAlignment=\"Center\"\r\nTextElement.FontWeight=\"Bold\">");
+            stringBuilder.AppendLine("</ContentPresenter>");
+            stringBuilder.AppendLine("</Border>");
+            stringBuilder.AppendLine("</Grid>");
+            stringBuilder.AppendLine("<ControlTemplate.Triggers>");
+            stringBuilder.AppendLine("<Trigger Property=\"IsPressed\" Value=\"True\">");
+            stringBuilder.AppendLine("<Setter Property=\"Background\" TargetName=\"border\">");
+            stringBuilder.AppendLine("<Setter.Value>");
+            stringBuilder.AppendLine("<RadialGradientBrush GradientOrigin=\"0.496,1.052\">");
+            stringBuilder.AppendLine("<RadialGradientBrush.RelativeTransform>");
+            stringBuilder.AppendLine("<TransformGroup>");
+            stringBuilder.AppendLine("<ScaleTransform CenterX=\"0.5\" CenterY=\"0.5\" ScaleX=\"1.5\" ScaleY=\"1.5\"/>");
+            stringBuilder.AppendLine("<TranslateTransform X=\"0.02\" Y=\"0.3\"/>");
+            stringBuilder.AppendLine("</TransformGroup>");
+            stringBuilder.AppendLine("</RadialGradientBrush.RelativeTransform>");
+            stringBuilder.AppendLine(" <GradientStop Color=\"#00000000\" Offset=\"1\"/>");
+            stringBuilder.AppendLine("<GradientStop Color=\"#FF303030\" Offset=\"0.3\"/>");
+            stringBuilder.AppendLine("</RadialGradientBrush>");
+            stringBuilder.AppendLine("</Setter.Value>");
+            stringBuilder.AppendLine("</Setter>");
+            stringBuilder.AppendLine("</Trigger>");
+            stringBuilder.AppendLine("<Trigger Property=\"IsMouseOver\" Value=\"True\">");
+            stringBuilder.AppendLine("<Setter Property=\"BorderBrush\" TargetName=\"border\" Value=\"#FF33962B\"/>");
+            stringBuilder.AppendLine("</Trigger>");
+            stringBuilder.AppendLine("<Trigger Property=\"IsEnabled\" Value=\"False\">");
+            stringBuilder.AppendLine("<Setter Property=\"Opacity\" TargetName=\"grid\" Value=\"0.25\"/>");
+            stringBuilder.AppendLine("</Trigger>");
+            stringBuilder.AppendLine("</ControlTemplate.Triggers>");
+            stringBuilder.AppendLine("</ControlTemplate>");
+            stringBuilder.AppendLine("</Setter.Value>");
+            stringBuilder.AppendLine("</Setter>");
+
+            return stringBuilder;
         }
     }
 }

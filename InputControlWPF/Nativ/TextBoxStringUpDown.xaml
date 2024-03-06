@@ -68,7 +68,7 @@
             Width="20"
             Height="11"
             Content="{StaticResource ResourceKey=ButtonUp}"
-            Style="{StaticResource ResourceKey=FlatButtonStyle}" />
+            Style="{StaticResource ResourceKey=UpDownButtonStyle}" />
 
         <Button
             x:Name="BtnDown"
@@ -77,7 +77,7 @@
             Width="20"
             Height="11"
             Content="{StaticResource ResourceKey=ButtonDown}"
-            Style="{StaticResource ResourceKey=FlatButtonStyle}" />
+            Style="{StaticResource ResourceKey=UpDownButtonStyle}" />
 
     </Grid>
 </UserControl>
