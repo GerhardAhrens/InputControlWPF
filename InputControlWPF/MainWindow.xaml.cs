@@ -21,6 +21,21 @@
         {
             this.InitializeComponent();
 
+            MulitiSelectCB = new Dictionary<string, object>();
+            MulitiSelectCB.Add("Hund", "MAS");
+            MulitiSelectCB.Add("Katze", "TPJ");
+            MulitiSelectCB.Add("Maus", "SBC");
+            MulitiSelectCB.Add("Zebra", "CBE");
+            MulitiSelectCB.Add("Wolf", "CBE");
+            MulitiSelectCB.Add("Mücke", "CBE");
+            MulitiSelectCB.Add("Huhn", "CBE");
+            MulitiSelectCB.Add("Amsel", "CBE");
+            MulitiSelectCB.Add("Ente", "CBE");
+
+            MultiSelectedsItems = new Dictionary<string, object>();
+            MultiSelectedsItems.Add("Hund", "MAS");
+            MultiSelectedsItems.Add("Katze", "TPJ");
+
             WeakEventManager<Window, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
             this.DataContext = this;
@@ -63,6 +78,26 @@
             set
             {
                 SetField(ref _SelectedsString, value);
+            }
+        }
+
+        private Dictionary<string, object> _MulitiSelectCB;
+        public Dictionary<string, object> MulitiSelectCB
+        {
+            get { return _MulitiSelectCB; }
+            set
+            {
+                SetField(ref _MulitiSelectCB, value);
+            }
+        }
+
+        private Dictionary<string, object> _MultiSelectedsItems;
+        public Dictionary<string, object> MultiSelectedsItems
+        {
+            get { return _MultiSelectedsItems; }
+            set
+            {
+                SetField(ref _MultiSelectedsItems, value);
             }
         }
 
@@ -204,6 +239,18 @@
             stringBuilder.AppendLine("</Setter>");
 
             return stringBuilder;
+        }
+
+        private void BtnIconButton_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (KeyValuePair<string, object> s in MultiSelectedsItems)
+            {
+                sb.AppendLine($"{s.Key}; {s.Value.ToString()}");
+            }
+
+            MessageBox.Show(sb.ToString());
+
         }
     }
 }

@@ -44,13 +44,14 @@ namespace InputControlWPF.InputControls
             this.FontSize = ControlBase.FontSize;
             this.FontFamily = ControlBase.FontFamily;
             this.BorderBrush = ControlBase.BorderBrush;
+            this.BorderThickness = ControlBase.BorderThickness;
+            this.Height = ControlBase.DefaultHeight;
             this.HorizontalContentAlignment = HorizontalAlignment.Left;
             this.VerticalAlignment = VerticalAlignment.Center;
             this.VerticalContentAlignment = VerticalAlignment.Center;
             this.Padding = new Thickness(0);
             this.Margin = new Thickness(2);
             this.MinHeight = 18;
-            this.Height = 23;
             this.ClipToBounds = false;
             this.Focusable = true;
 
