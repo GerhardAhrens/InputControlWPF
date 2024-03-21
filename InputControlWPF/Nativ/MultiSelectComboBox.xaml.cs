@@ -19,7 +19,7 @@
     /// </summary>
     public partial class MultiSelectComboBox : UserControl
     {
-        private ObservableCollection<Node> _nodeList = null;
+        private ObservableCollection<MultiSelectComboBoxNode> _nodeList = null;
         private string allText = string.Empty;
         private string noneText = string.Empty;
 
@@ -133,7 +133,7 @@
                 this.noneText = "None";
             }
 
-            this._nodeList = new ObservableCollection<Node>();
+            this._nodeList = new ObservableCollection<MultiSelectComboBoxNode>();
 
             /* Spezifisches Kontextmenü für Control übergeben */
             this.MultiSelectCombo.ContextMenu = this.BuildContextMenu();
@@ -164,14 +164,14 @@
 
                 if (countSelected == countAll)
                 {
-                    foreach (Node node in this._nodeList)
+                    foreach (MultiSelectComboBoxNode node in this._nodeList)
                     {
                         node.IsSelected = false;
                     }
                 }
                 else
                 {
-                    foreach (Node node in this._nodeList)
+                    foreach (MultiSelectComboBoxNode node in this._nodeList)
                     {
                         node.IsSelected = true;
                     }
@@ -180,7 +180,7 @@
             else
             {
                 int _selectedCount = 0;
-                foreach (Node s in this._nodeList)
+                foreach (MultiSelectComboBoxNode s in this._nodeList)
                 {
                     if (s.IsSelected && s.Title.ToLower().Contains("all") == false)
                     {
@@ -206,7 +206,7 @@
         {
             foreach (KeyValuePair<string, object> keyValue in this.SelectedItems)
             {
-                Node node = _nodeList.FirstOrDefault(i => i.Title == keyValue.Key);
+                MultiSelectComboBoxNode node = _nodeList.FirstOrDefault(i => i.Title == keyValue.Key);
                 if (node != null)
                 {
                     node.IsSelected = true;
@@ -222,7 +222,7 @@
             }
 
             this.SelectedItems.Clear();
-            foreach (Node node in _nodeList)
+            foreach (MultiSelectComboBoxNode node in _nodeList)
             {
                 if (node.IsSelected && node.Title.ToLower().Contains("all") == false)
                 {
@@ -239,12 +239,12 @@
             _nodeList.Clear();
             if (this.ItemsSource.Count > 0)
             {
-                _nodeList.Add(new Node(this.allText));
+                _nodeList.Add(new MultiSelectComboBoxNode(this.allText));
             }
 
             foreach (KeyValuePair<string, object> keyValue in this.ItemsSource)
             {
-                Node node = new Node(keyValue.Key);
+                MultiSelectComboBoxNode node = new MultiSelectComboBoxNode(keyValue.Key);
                 _nodeList.Add(node);
             }
 
@@ -263,7 +263,7 @@
                 }
                 else
                 {
-                    foreach (Node s in this._nodeList)
+                    foreach (MultiSelectComboBoxNode s in this._nodeList)
                     {
                         if (s.IsSelected == true && s.Title.ToLower().Contains("all") == true)
                         {
@@ -315,7 +315,7 @@
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (Node keyValue in this._nodeList)
+            foreach (MultiSelectComboBoxNode keyValue in this._nodeList)
             {
             }
 
@@ -326,7 +326,7 @@
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (Node keyValue in this._nodeList)
+            foreach (MultiSelectComboBoxNode keyValue in this._nodeList)
             {
             }
 
@@ -335,14 +335,14 @@
     }
 
     [DebuggerDisplay("Title: {this.Title}, IsSelected: {this.IsSelected}")]
-    public class Node : INotifyPropertyChanged
+    public class MultiSelectComboBoxNode : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string _title;
         private bool _isSelected;
 
-        public Node(string title)
+        public MultiSelectComboBoxNode(string title)
         {
             this.Title = title;
         }
