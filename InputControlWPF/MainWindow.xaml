@@ -196,6 +196,16 @@
                     Click="BtnIconButton_Click"
                     PathData="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"
                     Text="Result Multiselect CB" />
+
+                <inputControl:ComboBoxColor
+                    x:Name="superCombo"
+                    Grid.Row="0"
+                    Height="30" />
+
+                <TextBlock
+                    Height="20"
+                    Margin="0,10,0,0"
+                    Background="{Binding ElementName=superCombo, Path=SelectedColor, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </GroupBox>
     </StackPanel>

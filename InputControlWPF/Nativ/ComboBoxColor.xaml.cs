@@ -1,28 +1,74 @@
-﻿namespace InputControlWPF.Nativ
+﻿namespace InputControlWPF.InputControls
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
-    using System.Windows.Documents;
-    using System.Windows.Input;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-    using System.Windows.Navigation;
-    using System.Windows.Shapes;
 
     /// <summary>
     /// Interaktionslogik für ComboBoxColor.xaml
     /// </summary>
     public partial class ComboBoxColor : UserControl
     {
+        public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register("SelectedColor", typeof(Brush), typeof(ComboBoxColor), new UIPropertyMetadata(null, OnSelectedColorChangedCallback));
+
+
         public ComboBoxColor()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.BorderBrush = Brushes.Green;
+            this.BorderThickness = new Thickness(1);
+            this.superCombo.SelectionChanged += OnSelectionChanged;
+        }
+
+        ~ComboBoxColor()
+        {
+            this.superCombo.SelectionChanged -= OnSelectionChanged;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = sender as ComboBox;
+            var colorName = ((Selector)e.Source).SelectedValue;
+            BrushConverter convBrush = new BrushConverter();
+            SolidColorBrush brush = convBrush.ConvertFromString(colorName.ToString()) as SolidColorBrush;
+            this.SelectedColor = brush;
+        }
+
+        public Brush SelectedColor
+        {
+            get { return (Brush)GetValue(SelectedColorProperty); }
+            set { SetValue(SelectedColorProperty, value); }
+        }
+
+        private static void OnSelectedColorChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ComboBoxColor colorComboBox = d as ComboBoxColor;
+
+            if (d != null)
+            {
+                if (e.NewValue != e.OldValue)
+                {
+                    colorComboBox.SelectedColor = (Brush)e.NewValue;
+
+                    BrushConverter convBrush = new BrushConverter();
+                    SolidColorBrush brush = convBrush.ConvertFromString(e.NewValue.ToString()) as SolidColorBrush;
+
+                    if (brush is SolidColorBrush colorBrush)
+                    {
+                        Color color = colorBrush.Color;
+                        string colorName = GetColorName(color);
+                        colorComboBox.superCombo.SelectedValue = colorName;
+                    }
+                }
+            }
+        }
+
+        private static string GetColorName(Color col)
+        {
+            PropertyInfo colorProperty = typeof(Colors).GetProperties().FirstOrDefault(p => Color.AreClose((Color)p.GetValue(null), col));
+            return colorProperty != null ? colorProperty.Name : "unnamed color";
         }
     }
 }
