@@ -5,6 +5,7 @@
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
     using System.Xml.Linq;
 
     using InputControlWPF.Core;
@@ -52,6 +53,7 @@
         public XamlProperty<int> ValueIntUpDown { get; set; } = XamlProperty.Set<int>();
         public XamlProperty<DateTime?> ValueDate { get; set; } = XamlProperty.Set<DateTime?>();
         public XamlProperty<string> SelectedItemCB { get; set; } = XamlProperty.Set<string>();
+        public XamlProperty<Brush> SelectedColorItem { get; set; } = XamlProperty.Set<Brush>();
 
         private string _ValueText;
         public string ValueText
@@ -114,6 +116,7 @@
             this.ValueStringUpDown.Value = "Bär";
             this.ValueDate.Value = DateTime.Now;
             this.SelectedItemCB.Value = this.ValueSourceStrings.Value.FirstOrDefault();
+            this.SelectedColorItem.Value = Brushes.Transparent;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

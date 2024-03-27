@@ -200,7 +200,8 @@
                 <inputControl:ComboBoxColor
                     x:Name="superCombo"
                     Grid.Row="0"
-                    Height="30" />
+                    Height="30"
+                    SelectedColor="{Binding Path=SelectedColorItem.Value, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock
                     Height="20"
