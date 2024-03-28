@@ -126,6 +126,19 @@
                             SelectedItem="{Binding Path=SelectedItemCB.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             TabIndex="16" />
                     </inputControl:ContentFrame>
+
+                    <inputControl:ContentFrame
+                        Title="TextBoxCurrency"
+                        HorizontalAlignment="Left"
+                        ContentFrameColor="Transparent">
+                        <inputControl:TextBoxCurrency
+                            Width="100"
+                            IsReadOnly="False"
+                            CanShowAddPanel="True"
+                            Number="{Binding Path=ValueCurrency.Value, UpdateSourceTrigger=PropertyChanged}"
+                            SetBorder="True"
+                            TabIndex="16" />
+                    </inputControl:ContentFrame>
                 </inputControl:ContentElements>
 
                 <inputControl:TextBoxMultiline

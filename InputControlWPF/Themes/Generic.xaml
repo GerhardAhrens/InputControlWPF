@@ -1,4 +1,17 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:ControlTextBoxCurrency="clr-namespace:InputControlWPF.InputControls"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  New Light Style  -->
+    <Style BasedOn="{StaticResource {x:Type TextBox}}"
+        TargetType="ControlTextBoxCurrency:TextBoxCurrency">
+        <Setter Property="TextAlignment" Value="Right" />
+        <Style.Triggers>
+            <Trigger Property="IsNegative" Value="True">
+                <Setter Property="Foreground" Value="Red" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/InputControlWPF;component/UIElement/ContentFrameStyle.xaml" />

@@ -55,6 +55,8 @@
         public XamlProperty<string> SelectedItemCB { get; set; } = XamlProperty.Set<string>();
         public XamlProperty<Brush> SelectedColorItem { get; set; } = XamlProperty.Set<Brush>();
 
+        public XamlProperty<decimal> ValueCurrency { get; set; } = XamlProperty.Set<decimal>();
+
         private string _ValueText;
         public string ValueText
         {
@@ -117,6 +119,7 @@
             this.ValueDate.Value = DateTime.Now;
             this.SelectedItemCB.Value = this.ValueSourceStrings.Value.FirstOrDefault();
             this.SelectedColorItem.Value = Brushes.Transparent;
+            this.ValueCurrency.Value = 123.87M;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
