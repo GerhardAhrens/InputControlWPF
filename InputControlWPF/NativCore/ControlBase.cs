@@ -31,7 +31,7 @@ namespace InputControlWPF.NativCore
     {
         static ControlBase()
         {
-            FontFamily = new FontFamily("Tahoma");
+            FontFamily = new FontFamily("Segoe UI");
             FontSize = 12.0d;
             MinHeight = 18.0;
             DefaultHeight = 23.0;
