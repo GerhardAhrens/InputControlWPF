@@ -135,6 +135,7 @@
                             Width="100"
                             IsReadOnly="False"
                             CanShowAddPanel="True"
+                            UpDownRepeat="10"
                             Number="{Binding Path=ValueCurrency.Value, UpdateSourceTrigger=PropertyChanged}"
                             SetBorder="True"
                             TabIndex="16" />
