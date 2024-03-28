@@ -12,6 +12,7 @@
     <Folder Include="Core\" />
     <Folder Include="ModernUIBase\" />
     <Folder Include="ModernUI\RadionButton\" />
+    <Folder Include="ModernUI\ToggleButton\Themes\" />
     <Folder Include="Themes\" />
   </ItemGroup>
 

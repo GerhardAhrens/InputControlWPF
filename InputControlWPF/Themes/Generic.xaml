@@ -66,5 +66,6 @@
         <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/IconButtonStyle.xaml" />
         <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/UpDownButtonStyle.xaml" />
         <ResourceDictionary Source="/InputControlWPF;component/Resources/Style/GeometryIcon.xaml" />
+        <ResourceDictionary Source="/InputControlWPF;component/ModernUI/ToggleButton/Themes/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
